@@ -1,0 +1,293 @@
+{
+	"info": {
+		"_postman_id": "f99a1a7f-a086-4411-a7b6-ba318b63eaa9",
+		"name": "tutorial1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7883325"
+	},
+	"item": [
+		{
+			"name": "Orion Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/version",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"version"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Building 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"urn:ngsi-ld:Building:001\",\r\n    \"type\": \"Building\",\r\n    \"address\": {\r\n        \"type\": \"PostalAddress\",\r\n        \"value\": {\r\n            \"streetAddress\": \"Rua Barão do Triunfo\",\r\n            \"addressRegion\": \"São Paulo\",\r\n            \"addressLocality\": \"São Bernardo do Campo\",\r\n            \"postalCode\": \"09850-901\"\r\n        },\r\n        \"metadata\": {\r\n            \"verified\": {\r\n                \"value\": true,\r\n                \"type\": \"Boolean\"\r\n            }\r\n        }\r\n    },\r\n    \"location\": {\r\n        \"type\": \"geo:json\",\r\n        \"value\": {\r\n            \"type\": \"Point\",\r\n            \"coordinates\": [\r\n                -23.725181266144766,\r\n                -46.581882392472124\r\n            ]\r\n        }\r\n    },\r\n    \"name\": {\r\n        \"type\": \"Text\",\r\n        \"value\": \"Centro Universitário FEI - Prédio K\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/entities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Building 2",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"urn:ngsi-ld:Building:002\",\r\n    \"type\": \"Building\",\r\n    \"address\": {\r\n        \"type\": \"PostalAddress\",\r\n        \"value\": {\r\n            \"streetAddress\": \"Rua Barão do Triunfo\",\r\n            \"addressRegion\": \"São Paulo\",\r\n            \"addressLocality\": \"São Bernardo do Campo\",\r\n            \"postalCode\": \"09850-901\"\r\n        },\r\n        \"metadata\": {\r\n            \"verified\": {\r\n                \"value\": true,\r\n                \"type\": \"Boolean\"\r\n            }\r\n        }\r\n    },\r\n    \"location\": {\r\n        \"type\": \"geo:json\",\r\n        \"value\": {\r\n            \"type\": \"Point\",\r\n            \"coordinates\": [\r\n                -46.57978892326355,\r\n                -23.7262444049764\r\n            ]\r\n        }\r\n    },\r\n    \"name\": {\r\n        \"type\": \"Text\",\r\n        \"value\": \"Centro Universitário FEI - Prédio A\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/entities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Building 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Building:001?options=keyValues",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Building:001"
+					],
+					"query": [
+						{
+							"key": "options",
+							"value": "keyValues"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Buildings",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities?options=keyValues&type=Building",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities"
+					],
+					"query": [
+						{
+							"key": "options",
+							"value": "keyValues"
+						},
+						{
+							"key": "type",
+							"value": "Building"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Prédio A",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities?options=keyValues&q=name==%27Centro%20Universit%C3%A1rio%20FEI%20-%20Pr%C3%A9dio%20K%27",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Building",
+							"disabled": true
+						},
+						{
+							"key": "options",
+							"value": "keyValues"
+						},
+						{
+							"key": "q",
+							"value": "name==%27Centro%20Universit%C3%A1rio%20FEI%20-%20Pr%C3%A9dio%20K%27"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get São Bernardo",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities?options=keyValues&q=address.addressLocality==%27S%C3%A3o%20Bernardo%20do%20Campo%27",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Building",
+							"disabled": true
+						},
+						{
+							"key": "options",
+							"value": "keyValues"
+						},
+						{
+							"key": "q",
+							"value": "address.addressLocality==%27S%C3%A3o%20Bernardo%20do%20Campo%27"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Verified",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities?options=keyValues&q=mq=address.verified==true",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Building",
+							"disabled": true
+						},
+						{
+							"key": "options",
+							"value": "keyValues"
+						},
+						{
+							"key": "q",
+							"value": "mq=address.verified==true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get close to Prédio I",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities?type=Building&options=keyValues&georel=near;maxDistance:150&geometry=point&coords=-23.72721931758736, -46.579227000869544",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Building"
+						},
+						{
+							"key": "options",
+							"value": "keyValues"
+						},
+						{
+							"key": "georel",
+							"value": "near;maxDistance:150"
+						},
+						{
+							"key": "geometry",
+							"value": "point"
+						},
+						{
+							"key": "coords",
+							"value": "-23.72721931758736, -46.579227000869544"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

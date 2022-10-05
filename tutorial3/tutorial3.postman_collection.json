@@ -1,0 +1,681 @@
+{
+	"info": {
+		"_postman_id": "2ee34bed-83c5-4d49-b03e-1e7f3acaa1ad",
+		"name": "tutorial3",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7883325"
+	},
+	"item": [
+		{
+			"name": "Create a Product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"urn:ngsi-ld:Product:010\",\r\n    \"type\": \"Product\",\r\n    \"name\": {\r\n        \"type\": \"Text\",\r\n        \"value\": \"Lemonade\"\r\n    },\r\n    \"size\": {\r\n        \"type\": \"Text\",\r\n        \"value\": \"S\"\r\n    },\r\n    \"price\": {\r\n        \"type\": \"Integer\",\r\n        \"value\": 99\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/entities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get the Product",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:010?type=Product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:010"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Product"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a Special offer",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"specialOffer\": {\r\n        \"value\": true\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:010/attrs",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:010",
+						"attrs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create 2 Products with offer price",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actionType\": \"append_strict\",\r\n    \"entities\": [\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:011\",\r\n            \"type\": \"Product\",\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Brandy\"\r\n            },\r\n            \"size\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"M\"\r\n            },\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1199\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:012\",\r\n            \"type\": \"Product\",\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Port\"\r\n            },\r\n            \"size\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"M\"\r\n            },\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1099\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:001\",\r\n            \"type\": \"Product\",\r\n            \"offerPrice\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 89\r\n            }\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/op/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"op",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Append 2 products",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actionType\": \"append\",\r\n    \"entities\": [\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:011\",\r\n            \"type\": \"Product\",\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Brandy\"\r\n            },\r\n            \"size\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"M\"\r\n            },\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1199\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:012\",\r\n            \"type\": \"Product\",\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Port\"\r\n            },\r\n            \"size\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"M\"\r\n            },\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1099\r\n            }\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/op/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"op",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get the Product 10",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:010?type=Product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:010"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Product"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get the Product name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:010/attrs/name/value",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:010",
+						"attrs",
+						"name",
+						"value"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get the Product summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:010?type=Product&options=keyValues&attrs=name,price",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:010"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Product"
+						},
+						{
+							"key": "options",
+							"value": "keyValues"
+						},
+						{
+							"key": "attrs",
+							"value": "name,price"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get the Product summary values",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:010?type=Product&options=values&attrs=name,price",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:010"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Product"
+						},
+						{
+							"key": "options",
+							"value": "values"
+						},
+						{
+							"key": "attrs",
+							"value": "name,price"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/?type=Product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						""
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Product"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Products name and price",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/?type=Product&attrs=name, price&options=keyValues",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						""
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Product"
+						},
+						{
+							"key": "attrs",
+							"value": "name, price"
+						},
+						{
+							"key": "options",
+							"value": "keyValues"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Products ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/?type=Product&options=count&attrs=__NONE",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						""
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Product"
+						},
+						{
+							"key": "options",
+							"value": "count"
+						},
+						{
+							"key": "attrs",
+							"value": "__NONE"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Product 10 Price",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "89\r\n",
+					"options": {
+						"raw": {
+							"language": "text"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:010/attrs/price/value?type=Product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:010",
+						"attrs",
+						"price",
+						"value"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Product"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update multiple attributes",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"price\": {\r\n        \"type\": \"Integer\",\r\n        \"value\": 70\r\n    },\r\n    \"name\": {\r\n        \"type\": \"Text\",\r\n        \"value\": \"Ale\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:001/attrs?type=Product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:001",
+						"attrs"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Product"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update multiple products",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actionType\": \"update\",\r\n    \"entities\": [\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:010\",\r\n            \"type\": \"Product\",\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1199\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:011\",\r\n            \"type\": \"Product\",\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1199\r\n            },\r\n            \"size\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"L\"\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/op/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"op",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update and create attributes",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actionType\": \"append\",\r\n    \"entities\": [\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:011\",\r\n            \"type\": \"Product\",\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1199\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:012\",\r\n            \"type\": \"Product\",\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1199\r\n            },\r\n            \"specialOffer\": {\r\n                \"type\": \"Boolean\",\r\n                \"value\": true\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/op/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"op",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Replace product",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actionType\": \"replace\",\r\n    \"entities\": [\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:010\",\r\n            \"type\": \"Product\",\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1199\r\n            }\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/op/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"op",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a product",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:010",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:010"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a attribute",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:012/attrs/specialOffer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Product:012",
+						"attrs",
+						"specialOffer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete multiple entities",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actionType\": \"delete\",\r\n    \"entities\": [\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:011\",\r\n            \"type\": \"Product\"\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:012\",\r\n            \"type\": \"Product\"\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/op/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"op",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete multiple entities Copy",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"actionType\":\"delete\",\r\n  \"entities\":[\r\n    {\r\n      \"id\":\"urn:ngsi-ld:Product:001\", \"type\":\"Product\",\r\n      \"offerPrice\":{}\r\n    }\r\n  ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/op/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"op",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,188 @@
+{
+	"info": {
+		"_postman_id": "cb880551-419a-419d-9b75-ed15b6a8a575",
+		"name": "tutorial4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7883325"
+	},
+	"item": [
+		{
+			"name": "Heatlh check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check query",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"entities\": [\r\n        {\r\n            \"type\": \"Store\",\r\n            \"isPattern\": \"false\",\r\n            \"id\": \"urn:ngsi-ld:Store:001\"\r\n        }\r\n    ],\r\n    \"attrs\": [\r\n        \"temperature\",\r\n        \"relativeHumidity\"\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/op/query",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"op",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create store 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"urn:ngsi-ld:Store:001\",\r\n    \"type\": \"Store\",\r\n    \"address\": {\r\n        \"type\": \"PostalAddress\",\r\n        \"value\": {\r\n            \"streetAddress\": \"Avenida Maria Servidei Demarchi, 398\",\r\n            \"addressRegion\": \"São Paulo\",\r\n            \"addressLocality\": \"São Bernardo do Campo\",\r\n            \"postalCode\": \"09820-000\"\r\n        },\r\n        \"metadata\": {\r\n            \"verified\": {\r\n                \"value\": true,\r\n                \"type\": \"Boolean\"\r\n            }\r\n        }\r\n    },\r\n    \"location\": {\r\n        \"type\": \"geo:json\",\r\n        \"value\": {\r\n            \"type\": \"Point\",\r\n            \"coordinates\": [\r\n                -46.55250126146248,\r\n                -23.726831522796758\r\n            ]\r\n        }\r\n    },\r\n    \"name\": {\r\n        \"type\": \"Text\",\r\n        \"value\": \"Carrefour\"\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/entities",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register context for Store 1",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"description\": \"Random Conditions\",\r\n    \"dataProvided\": {\r\n        \"entities\": [\r\n            {\r\n                \"id\": \"urn:ngsi-ld:Store:001\",\r\n                \"type\": \"Store\"\r\n            }\r\n        ],\r\n        \"attrs\": [\r\n            \"relativeHumidity\",\r\n            \"temperature\"\r\n        ]\r\n    },\r\n    \"provider\": {\r\n        \"http\": {\r\n            \"url\": \"http://context-provider:5000\"\r\n        }\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/registrations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"registrations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Store 1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Store:001"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Store",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get registrations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/registrations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"registrations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete registration",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:1026/v2/registrations/633dbe07d4210825b72e22db",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"registrations",
+						"633dbe07d4210825b72e22db"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

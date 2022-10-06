@@ -4,6 +4,8 @@ from flask import Flask, request, jsonify, abort
 
 app = Flask(__name__)
 
+lastPriceChange = []
+
 @app.route('/health', methods=['GET', 'POST'])
 def healthRandom():
     temperature = random.randint(10, 50)
@@ -39,6 +41,17 @@ def query():
     except:
         return jsonify({'error': 'Body does not contain entities'}), 400
     return jsonify(response), 200
+
+@app.route('/priceChange', methods=['GET', 'POST'])
+def priceChange():
+    global lastPriceChange
+    lastPriceChange = request.json
+    return jsonify(), 200
+
+@app.route('/monitor', methods=['GET', 'POST'])
+def monitor():
+    global lastPriceChange
+    return jsonify(lastPriceChange), 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

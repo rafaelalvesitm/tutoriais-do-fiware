@@ -1,0 +1,245 @@
+{
+	"info": {
+		"_postman_id": "f72d0600-2d69-4500-bffd-3dc77c7c5c42",
+		"name": "tutorial6",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7883325"
+	},
+	"item": [
+		{
+			"name": "Create service",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "fiware-service",
+						"value": "openiot",
+						"type": "text"
+					},
+					{
+						"key": "fiware-servicepath",
+						"value": "/",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"services\": [\r\n        {\r\n            \"apikey\": \"4jggokgpepnvsb2uv4s40d59ov\",\r\n            \"cbroker\": \"http://orion:1026\",\r\n            \"entity_type\": \"Device\",\r\n            \"resource\": \"/iot/json\"\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4041/iot/services",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4041",
+					"path": [
+						"iot",
+						"services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Provision a device",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "fiware-service",
+						"value": "openiot",
+						"type": "text"
+					},
+					{
+						"key": "fiware-servicepath",
+						"value": "/",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"devices\": [\r\n        {\r\n            \"device_id\": \"device001\",\r\n            \"entity_name\": \"urn:ngsi-ld:Device:001\",\r\n            \"entity_type\": \"Device\",\r\n            \"transport\": \"HTTP\",\r\n            \"endpoint\": \"http://dummy-device:80/device1\",\r\n            \"attributes\": [\r\n                {\r\n                    \"object_id\": \"t\",\r\n                    \"name\": \"temperature\",\r\n                    \"type\": \"Number\"\r\n                },\r\n                {\r\n                    \"object_id\": \"rh\",\r\n                    \"name\": \"relativeHumidity\",\r\n                    \"type\": \"Number\"\r\n                }\r\n            ],\r\n            \"commands\": [\r\n                {\r\n                    \"name\": \"switch\",\r\n                    \"type\": \"command\"\r\n                }\r\n            ],\r\n            \"static_attributes\": [\r\n                {\r\n                    \"name\": \"refStore\",\r\n                    \"type\": \"Relationship\",\r\n                    \"value\": \"urn:ngsi-ld:Store:001\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:4041/iot/devices",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "4041",
+					"path": [
+						"iot",
+						"devices"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send data via IoT Agent",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "fiware-service",
+						"value": "openiot",
+						"type": "text"
+					},
+					{
+						"key": "fiware-servicepath",
+						"value": "/",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"t\": 10,\r\n    \"rh\" : 50\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:7896/iot/json?k=4jggokgpepnvsb2uv4s40d59ov&i=device001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "7896",
+					"path": [
+						"iot",
+						"json"
+					],
+					"query": [
+						{
+							"key": "k",
+							"value": "4jggokgpepnvsb2uv4s40d59ov"
+						},
+						{
+							"key": "i",
+							"value": "device001"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Device 1",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "fiware-service",
+						"value": "openiot",
+						"type": "text"
+					},
+					{
+						"key": "fiware-servicepath",
+						"value": "/",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Device:001?type=Device&options=keyValues",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Device:001"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Device"
+						},
+						{
+							"key": "options",
+							"value": "keyValues"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Send Swicth Command via Orion",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "fiware-service",
+						"value": "openiot",
+						"type": "text"
+					},
+					{
+						"key": "fiware-servicepath",
+						"value": "/",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"switch\": {\r\n        \"type\": \"command\",\r\n        \"value\": \"\"     \r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Device:001/attrs?type=Device",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "1026",
+					"path": [
+						"v2",
+						"entities",
+						"urn:ngsi-ld:Device:001",
+						"attrs"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "Device"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

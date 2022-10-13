@@ -1,80 +1,70 @@
-import re
-import time
-import paho.mqtt.client as mqtt
 import random
+import time
+import requests
+import json
 
 from multiprocessing import Process, Value
+from flask import Flask, request, make_response, json
 
-# Create shared variables between process
-SEND = Value('b', False)
-INTERVAL = Value('i', 5)
+# Define shared variables between process
+SEND = Value("b", False)
+INTERVAL = Value("i", 5)
 
-# Define MQTT client
-client = mqtt.Client()
-client.connect("mosquitto", 1883, 60)
+app = Flask(__name__)
 
-# The callback for when a message is received from the server.
-def on_message(client, userdata, msg):
-    # print(f"Topic: {msg.topic}| Payload: {str(msg.payload)}")
-    # Parses the message payload described in the FIWARE specification. 
-    # the payload is something like "b'<device ID>@<command name>|<command value>'"
-    match = re.search(r"[@](.+)[|](.+)'", str(msg.payload)) # regex to parse the payload and get <command name> and <command value>
-    command = match.group(1) # command name
-    value = match.group(2) # command value
 
-    # Check if the command is the one we want to execute
-    if command == "switch":
-        if SEND.value == False:
-            SEND.value = True
-            client.publish('ul/4jggokgpepnvsb2uv4s40d59ov/device001/attrs', "switch_status|OK")
-            client.publish('ul/4jggokgpepnvsb2uv4s40d59ov/device001/attrs', "switch_info|Started sending data")
-        elif SEND.value == True:
-            SEND.value = False
-            client.publish('ul/4jggokgpepnvsb2uv4s40d59ov/device001/attrs', "switch_status|OK")
-            client.publish('ul/4jggokgpepnvsb2uv4s40d59ov/device001/attrs', "switch_info|Stopped sending data")
-    elif command == "interval":
-        try:
-            INTERVAL.value = int(value)
-        except:
-            INTERVAL.value = 5
-        client.publish('ul/4jggokgpepnvsb2uv4s40d59ov/device001/attrs', "interval_status|OK")
-        client.publish('ul/4jggokgpepnvsb2uv4s40d59ov/device001/attrs', f"interval_info|Interval set to {INTERVAL.value}")
+@app.route("/", methods=["GET", "POST"])
+def index():
+    print(f"request: {request.json}")
+    return make_response(json.dumps({"on": "method executed"}), 200)
 
-def run_mqtt(client):
-    # Creates a MQTT client. 
-    client.on_message = on_message
 
-    # Subscribe to the topic for the device
-    client.subscribe("/4jggokgpepnvsb2uv4s40d59ov/device001/cmd")
+@app.route("/device1", methods=["GET", "POST"])
+def device1():
+    if request.method == "POST":
+        data = request.json
+        if "switch" in data:
+            if SEND.value == False:
+                SEND.value = True
+                return make_response(
+                    json.dumps({"switch": "Started sending data"}), 200
+                )
+            elif SEND.value == True:
+                SEND.value == False
+                return make_response(
+                    json.dumps({"switch": "Stopped sending data"}), 200
+                )
+            else:
+                return make_response(json.dumps({"error": "Method not allowed"}), 405)
+        elif "interval" in data:
+            try:
+                INTERVAL.value = int(data["interval"])
+                return make_response(json.dumps({"interval": "Interval changed"}), 200)
+            except:
+                return make_response(json.dumps({"error": "Method not allowed"}), 405)
+            return make_response(json.dumps({"error": "Invalid Interval"}), 405)
+        else:
+            return make_response(json.dumps({"error": "Method not allowed"}), 405)
 
-    # Blocking call that processes network traffic, dispatches callbacks and
-    # handles reconnecting.
-    # Other loop*() functions are available that give a threaded interface and a
-    # manual interface.
-    client.loop_forever()
 
-def send_data(client):
+# Function to save data in a csv file. Running from a thread.
+def sendData():
     while True:
         if SEND.value:
-            # Create random temperature and relative umidity values
-            temperature = round(random.uniform(10, 40), 2)
-            humidity = round(random.uniform(0, 100), 2)
+            humidity = random.randint(0, 100)
+            temperature = random.randint(10, 40)
 
-            # Send random variables via MQTT
-            client.publish('ul/4jggokgpepnvsb2uv4s40d59ov/device001/attrs', f"t|{temperature}")
-            client.publish('ul/4jggokgpepnvsb2uv4s40d59ov/device001/attrs', f"rh|{humidity}")
+            url = "http://fiware-iot-agent-json:7896/iot/json?k=4jggokgpepnvsb2uv4s40d59ov&i=device001"
 
-        # Waint some amout of time
+            payload = json.dumps({"t": f"{temperature}", "rh": f"{humidity}"})
+            headers = {"Content-Type": "application/json"}
+
+            requests.request("POST", url, headers=headers, data=payload)
+
         time.sleep(INTERVAL.value)
 
 
+p = Process(target=sendData).start()
+
 if __name__ == "__main__":
-    # Create a process to run the MQTT client
-    client
-    p = Process(target=run_mqtt, args=(client,))
-    p.start()
-    
-    # Create a process to send the data to the MQTT broker
-    p = Process(target=send_data, args=(client,))
-    p.start()
-    
+    sendData()

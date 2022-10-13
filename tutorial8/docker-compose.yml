@@ -1,0 +1,161 @@
+# WARNING: Do not deploy this tutorial configuration directly to a production environment
+#
+# The tutorial docker-compose files have not been written for production deployment and will not 
+# scale. A proper architecture has been sacrificed to keep the narrative focused on the learning 
+# goals, they are just used to deploy everything onto a single Docker machine. All FIWARE components 
+# are running at full debug and extra ports have been exposed to allow for direct calls to services. 
+# They also contain various obvious security flaws - passwords in plain text, no load balancing,
+# no use of HTTPS and so on. 
+# 
+# This is all to avoid the need of multiple machines, generating certificates, encrypting secrets
+# and so on, purely so that a single docker-compose file can be read as an example to build on, 
+# not use directly. 
+# 
+# When deploying to a production environment, please refer to the Helm Repository
+# for FIWARE Components in order to scale up to a proper architecture:
+# 
+# see: https://github.com/FIWARE/helm-charts/
+#
+# OBS: This document is a modification of the one provided by FIWARE in its tutorials. 
+# OBS: Be very careful with indentation
+
+version: "3.8" # Version for the docker compose
+services:
+
+  # Orion is the context broker
+  orion:
+    image: fiware/orion:3.7.0 # Loads this image from Docker Hub
+    hostname: orion # Create a hostname to be easier to find the container in the network
+    container_name: fiware-orion # Create a container name to be easier to get information for it
+    depends_on:
+      - mongo-db # Database for persinting eantity information from orion
+    networks:
+      - default # Users a local network called default
+    ports:
+      - "1026:1026" # match port 1026 on the machine to the one in the container
+    command: -dbhost mongo-db -logLevel DEBUG -noCache
+    healthcheck: # check if orion is healthy
+      test: curl --fail -s http://orion:1026/version || exit 1
+      interval: 10s
+
+  # Databases
+  mongo-db:
+    image: mongo:4.4 # Loads this image from Docker Hub
+    hostname: mongo-db # Create a hostname to be easier to find the container in the network
+    container_name: db-mongo # Create a container name to be easier to get information for it
+    expose:
+      - "27017" # Expose this port to the network
+    ports:
+      - "27017:27017" # match port 27017 on the machine to the one in the container
+    networks:
+      - default # Users a local network called default
+    volumes: # Uses a volume to persit the data in the database
+      - mongo-db:/data
+    healthcheck: # check if Mongo DB is healthy
+      test: |
+        host=`hostname --ip-address || echo '127.0.0.1'`; 
+        mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
+      interval: 5s
+
+  # Iot Agent JSON
+  iot-agent-json:
+    image: fiware/iotagent-json # Loads this image from docker hub
+    hostname: fiware-iot-agent-json
+    container_name: fiware-iot-agent-json
+    depends_on:
+      - mongo-db
+    networks:
+      - default
+    expose:
+      - "4041"
+      - "7896"
+    ports:
+      - "4041:4041" # localhost:4041
+      - "7896:7896" # localhost:7896
+    environment:
+      - IOTA_CB_HOST=orion # name of the context broker to update context
+      - IOTA_CB_PORT=1026 # port the context broker listens on to update context
+      - IOTA_NORTH_PORT=4041
+      - IOTA_REGISTRY_TYPE=mongodb #Whether to hold IoT device info in memory or in a database
+      - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
+      - IOTA_DEFAULT_EXPRESSION_LANGUAGE=jexl
+      - IOTA_TIMESTAMP=true # Supply timestamp information with each measurement
+      - IOTA_CB_NGSI_VERSION=v2 # use NGSIv2 when sending updates for active attributes
+      - IOTA_AUTOCAST=true # Ensure Ultralight number values are read as numbers not strings
+      - IOTA_MONGO_HOST=mongo-db # The host name of MongoDB
+      - IOTA_MONGO_PORT=27017 # The port mongoDB is listening on
+      - IOTA_MONGO_DB=iotagentjson # The name of the database used in mongoDB
+      - IOTA_HTTP_PORT=7896 # The port used for device traffic over HTTP
+      - IOTA_PROVIDER_URL=http://iot-agent-json:4041
+      - IOTA_DEFAULT_RESOURCE=/iot/json
+    healthcheck:
+      interval: 10s
+
+  dummy-device: # Context provider example. Build using flask
+    build: ./dummy-device # Build this image from the ./context-providerfolder
+    hostname: dummy-device
+    container_name: dummy-device
+    depends_on:
+      - orion
+      - mosquitto
+    volumes:
+      - ./dummy-device:/code
+    expose: # Expose this port to the network
+      - "80"
+    ports: # Match port 6000 from the container to the localhost
+      - "80:80"
+    networks: # Include this container in the default network
+      - default
+
+  cygnus:
+    image: fiware/cygnus-ngsi:2.16.0
+    hostname: cygnus
+    container_name: fiware-cygnus
+    networks:
+      - default
+    depends_on:
+      - mysql-db
+    expose:
+      - "5050"
+      - "5080"
+    ports:
+      - "5050:5050" # localhost:5050
+      - "5080:5080" # localhost:5080
+    environment:
+      - "CYGNUS_MYSQL_SERVICE_PORT=5050" # Notification Port that Cygnus listens when subcribing to context data changes
+      - "CYGNUS_MYSQL_HOST=mysql-db" # Hostname of the MySQL server used to persist historical context data
+      - "CYGNUS_MYSQL_PORT=3306" # Port that the MySQL server uses to listen to commands
+      - "CYGNUS_MYSQL_USER=root" # Username for the MySQL database user
+      - "CYGNUS_MYSQL_PASS=123" # Password for the MySQL database user
+      - "CYGNUS_SERVICE_PORT=5050"
+      - "CYGNUS_API_PORT=5080" # Port that Cygnus listens on for operational reasons
+      - "CYGNUS_LOG_LEVEL=DEBUG" # The logging level for Cygnus
+    healthcheck:
+      test: curl --fail -s http://localhost:5080/v1/version || exit 1
+
+  mysql-db:
+    restart: always
+    labels:
+      org.fiware: 'tutorial'
+    image: mysql:5.7
+    hostname: mysql-db
+    container_name: db-mysql
+    expose:
+      - "3306"
+    ports:
+      - "3306:3306" # localhost:3306
+    networks:
+      - default
+    environment:
+      - "MYSQL_ROOT_PASSWORD=123"
+      - "MYSQL_ROOT_HOST=%"
+    volumes:
+      - mysql-db:/var/lib/mysql
+
+
+networks:
+  default:
+  
+volumes: # Creates a volume to persit the data in the database
+  mongo-db: ~
+  mysql-db: ~

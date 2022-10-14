@@ -38,38 +38,6 @@ services:
       test: curl --fail -s http://orion:1026/version || exit 1
       interval: 10s
 
-  iot-agent-json:
-    image: fiware/iotagent-json # Loads this image from docker hub
-    hostname: fiware-iot-agent-json
-    container_name: fiware-iot-agent-json
-    depends_on:
-      - mongo-db
-    networks:
-      - default
-    expose:
-      - "4041"
-      - "7896"
-    ports:
-      - "4041:4041" # localhost:4041
-      - "7896:7896" # localhost:7896
-    environment:
-      - IOTA_CB_HOST=orion # name of the context broker to update context
-      - IOTA_CB_PORT=1026 # port the context broker listens on to update context
-      - IOTA_NORTH_PORT=4041
-      - IOTA_REGISTRY_TYPE=mongodb #Whether to hold IoT device info in memory or in a database
-      - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
-      - IOTA_DEFAULT_EXPRESSION_LANGUAGE=jexl
-      - IOTA_TIMESTAMP=true # Supply timestamp information with each measurement
-      - IOTA_CB_NGSI_VERSION=v2 # use NGSIv2 when sending updates for active attributes
-      - IOTA_AUTOCAST=true # Ensure Ultralight number values are read as numbers not strings
-      - IOTA_MONGO_HOST=mongo-db # The host name of MongoDB
-      - IOTA_MONGO_PORT=27017 # The port mongoDB is listening on
-      - IOTA_MONGO_DB=iotagentjson # The name of the database used in mongoDB
-      - IOTA_HTTP_PORT=7896 # The port used for device traffic over HTTP
-      - IOTA_PROVIDER_URL=http://iot-agent-json:4041
-      - IOTA_DEFAULT_RESOURCE=/iot/json
-    healthcheck:
-      interval: 10s
 
   # Databases
   mongo-db:
@@ -90,12 +58,61 @@ services:
         mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
       interval: 5s
 
+  iot-agent-ul:
+    image: fiware/iotagent-ul
+    hostname: iot-agent-ul
+    container_name: fiware-iot-agent-ul
+    depends_on:
+      - mongo-db
+      - mosquitto
+    networks:
+      - default
+    expose:
+      - "4042"
+    ports:
+      - "4042:4042" # localhost:4042
+    environment:
+      - IOTA_CB_HOST=orion # name of the context broker to update context
+      - IOTA_CB_PORT=1026 # port the context broker listens on to update context
+      - IOTA_NORTH_PORT=4042
+      - IOTA_REGISTRY_TYPE=mongodb #Whether to hold IoT device info in memory or in a database
+      - IOTA_LOG_LEVEL=DEBUG # The log level of the IoT Agent
+      - IOTA_TIMESTAMP=true # Supply timestamp information with each measurement
+      - IOTA_CB_NGSI_VERSION=v2 # use NGSIv2 when sending updates for active attributes
+      - IOTA_AUTOCAST=true # Ensure Ultralight number values are read as numbers not strings
+      - IOTA_MONGO_HOST=mongo-db # The host name of MongoDB
+      - IOTA_MONGO_PORT=27017 # The port mongoDB is listening on
+      - IOTA_MONGO_DB=iotagentul # The name of the database used in mongoDB
+      - IOTA_MQTT_HOST=mosquitto # The host name of the MQTT Broker
+      - IOTA_MQTT_PORT=1883 # The port the MQTT Broker is listening on to receive topics
+      - IOTA_DEFAULT_RESOURCE= # Default is blank. I'm using MQTT so I don't need a resource
+      - IOTA_PROVIDER_URL=http://iot-agent-ul:4042
+      - IOTA_DEFAULT_TRANSPORT=MQTT
+    healthcheck:
+      interval: 5s
+
+  mosquitto:
+    image: eclipse-mosquitto:1.6.14
+    hostname: mosquitto
+    container_name: mosquitto
+    expose:
+      - "1883"
+      - "9001"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    # volumes:
+    #   - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - default
+
   dummy-device: # Context provider example. Build using flask
     build: ./dummy-device # Build this image from the ./context-providerfolder
     hostname: dummy-device
     container_name: dummy-device
     depends_on:
       - orion
+      - mosquitto
     volumes:
       - ./dummy-device:/code
     expose: # Expose this port to the network

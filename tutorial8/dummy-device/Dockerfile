@@ -3,4 +3,4 @@ ADD . /code
 COPY . /code
 WORKDIR /code
 RUN pip install -r requirements.txt
-CMD [ "python", "-u", "app.py"]
+CMD [ "flask", "run", "--host=0.0.0.0", "--port=80"]

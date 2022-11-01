@@ -4,7 +4,7 @@ Este repositório contém vários tutoriais para usar [FIWARE](https://www.fiwar
 
 # Descrição geral
 
-Cada tutorial é dividido em várias pastas neste repositório. A descrição de cada tutorial pode ser vista no [meu site pessoal](https://rafaelalvesitm.com/) ou então no README de cada pasta. Estes tutoriais visam demonstrar a utilização dos seguintes componentes:
+Cada tutorial é dividido em várias pastas neste repositório. A descrição de cada tutorial pode ser vista no [meu site pessoal](https://rafaelalvesitm.com/01+-+Notas+de+literatura/Plataforma+IoT+FIWARE) ou então no README de cada pasta. Estes tutoriais visam demonstrar a utilização dos seguintes componentes:
 
 - FIWARE Orion Context Broker.
 - FIWARE IoT Agent JSON.
@@ -15,6 +15,8 @@ Cada tutorial é dividido em várias pastas neste repositório. A descrição de
 - Grafana.
 - Context provider escrito utilizando o framework Flask.
 - Dummy-device escrito utilizando o framework Flask.
+
+Também é possivel acompanhar cada tutorial na [Playlist de vídeos no Youtube com os Tutoriais](https://youtube.com/playlist?list=PLOZst2b_z6LPZuhpv6WOOxW8b-fIANdFq)
 
 ## Tutorial 1 - Introdução ao FIWARE
 

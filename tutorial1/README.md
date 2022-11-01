@@ -15,7 +15,7 @@ Este tutorial fornece ao usuário informações sobre como usar os conceitos bá
 
 # Player
 
-<iframe width="100%" height=100% style="aspect-ratio: 16/9" src="https://www.youtube.com/embed/PSGLu1eodr4" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/PSGLu1eodr4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
 

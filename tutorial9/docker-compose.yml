@@ -90,7 +90,7 @@ services:
       - IOTA_DEFAULT_RESOURCE=/iot/json
     healthcheck:
       interval: 10s
-      
+
   cygnus:
     image: fiware/cygnus-ngsi:2.16.0
     hostname: cygnus

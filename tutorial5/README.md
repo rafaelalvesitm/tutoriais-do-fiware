@@ -1,14 +1,24 @@
 # Introdução 
 
-Este tutorial ensina os usuários do FIWARE sobre como criar e gerenciar assinaturas de dados de contexto. O tutorial baseia-se na entidade **Store** criada nos últimos [[Entendendo entidades e relacionamentos em FIWARE|tutoriais do FIWARE]] e permite ao usuário enviar notificações para sistemas externos caso uma regra seja atingida. 
-
-# Requirements
+Este tutorial ensina os usuários do FIWARE sobre como criar e gerenciar assinaturas de dados de contexto. O tutorial baseia-se na entidade **Store** criada nos últimos [[Entidades e relacionamentos no FIWARE|tutoriais do FIWARE]] e permite ao usuário enviar notificações para sistemas externos caso uma regra seja atingida. 
 
 # Requisitos 
 
-**Antes de prosseguir é recomendado que os usuários sigam os [[Requisitos para acompanhar os tutoriais]].** 
+>[!info] Antes de começar os tutoriais faça o seguinte:
+> - Instale o [Docker, Docker compose](https://www.docker.com/)  e o [Postman](https://www.postman.com/downloads/). 
+>- Baixe ou clone o [Repositório do GitHub](https://github.com/rafaelalvesitm/tutoriais-do-fiware).
+>- Importe o arquivo `Tutoriais do Fiware.postman_collection.json` para o Postman.
+>- Abra o Docker no computador.
+>- Abra o Postman Agent no computador. 
 
-> **Você pode obter todos os arquivos necessários para este tutorial no seguinte link: [Tutoriais no GitHub](https://github.com/rafaelalvesitm/my_fiware_tutorials) e indo para a pasta `tutorial5`. Existe um arquivo `docker-compose.yml` usado para criar o tutorial usando o Docker um arquivo `tutorial5.postman_collection.json` usado para importar as solicitações deste tutorial para o Postman**.
+# Vídeo do tutorial
+
+# Player
+
+<iframe width="100%" height=100% style="aspect-ratio: 16/9" src="https://www.youtube.com/embed/m9YlNhi9rfE" allowfullscreen></iframe>
+
+
+Caso o player não funcione utilize o link: [Assinaturas no Orion Context Broker - Tutoriais do FIWARE #6 - YouTube](https://www.youtube.com/watch?v=m9YlNhi9rfE)
 
 # Assinando Mudanças de Estado
 

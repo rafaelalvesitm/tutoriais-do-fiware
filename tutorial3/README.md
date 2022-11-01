@@ -4,9 +4,20 @@ Este tutorial ensina os usuários do FIWARE sobre as [[Operações CRUD]]. O tut
 
 # Requisitos 
 
-**Antes de prosseguir é recomendado que os usuários sigam os [[Requisitos para acompanhar os tutoriais]].** 
+>[!info] Antes de começar os tutoriais faça o seguinte:
+> - Instale o [Docker, Docker compose](https://www.docker.com/)  e o [Postman](https://www.postman.com/downloads/). 
+>- Baixe ou clone o [Repositório do GitHub](https://github.com/rafaelalvesitm/tutoriais-do-fiware).
+>- Importe o arquivo `Tutoriais do Fiware.postman_collection.json` para o Postman.
+>- Abra o Docker no computador.
+>- Abra o Postman Agent no computador. 
 
-> **Você pode obter todos os arquivos necessários para este tutorial no seguinte link: [Tutoriais no GitHub](https://github.com/rafaelalvesitm/my_fiware_tutorials) e indo para a pasta `tutorial3`. Existe um arquivo `docker-compose.yml` usado para criar o tutorial usando o Docker um arquivo `tutorial3.postman_collection.json` usado para importar as solicitações deste tutorial para o Postman**.
+# Vídeo do tutorial
+
+# Player
+
+<iframe width="100%" height=100% style="aspect-ratio: 16/9" src="https://www.youtube.com/embed/lp3nGAPOkek" allowfullscreen></iframe>
+
+Caso o player não funcione utilize o link: [Operações CRUD no Orion Context Broker - Tutoriais do FIWARE #4 - YouTube](https://www.youtube.com/watch?v=lp3nGAPOkek)
 
 # Entidades
 

@@ -1,12 +1,21 @@
 # Introdução 
 
-Este tutorial ensina os usuários do FIWARE sobre dados de contexto e provedores de contexto. O tutorial baseia-se na entidade **Store** criada nos últimos [[Entendendo entidades e relacionamentos em FIWARE|tutoriais do FIWARE]] e permite ao usuário recuperar dados sobre uma loja que não são mantidos diretamente no **Orion Context Broker**.
+Este tutorial ensina os usuários do FIWARE sobre dados de contexto e provedores de contexto. O tutorial baseia-se na entidade **Store** criada nos últimos [[Entidades e relacionamentos no FIWARE|tutoriais do FIWARE]] e permite ao usuário recuperar dados sobre uma loja que não são mantidos diretamente no **Orion Context Broker**.
 
 # # Requisitos 
 
 **Antes de prosseguir é recomendado que os usuários sigam os [[Requisitos para acompanhar os tutoriais]].** 
 
 > **Você pode obter todos os arquivos necessários para este tutorial no seguinte link: [Tutoriais no GitHub](https://github.com/rafaelalvesitm/my_fiware_tutorials) e indo para a pasta `tutorial4`. Existe um arquivo `docker-compose.yml` usado para criar o tutorial usando o Docker um arquivo `tutorial4.postman_collection.json` usado para importar as solicitações deste tutorial para o Postman**.**
+
+# Vídeo do tutorial
+
+# Player
+
+<iframe width="100%" height=100% style="aspect-ratio: 16/9" src="https://www.youtube.com/embed/Ttb5xMKwQBI" allowfullscreen></iframe>
+
+
+Caso o player não funcione utilize o link: [Provedores de contexto - Tutoriais do FIWARE #5 - YouTube](https://www.youtube.com/watch?v=Ttb5xMKwQBI)
 
 # Dados  de contexto e provedores de contexto
 

@@ -4,9 +4,18 @@ Este tutorial apresenta o uso do protocolo MQTT em dispositivos IoT que se conec
 
 # Requisitos
 
-**Antes de prosseguir é recomendado que os usuários sigam os [[Requisitos para acompanhar os tutoriais]].** 
+>[!info] Antes de começar os tutoriais faça o seguinte:
+> - Instale o [Docker, Docker compose](https://www.docker.com/)  e o [Postman](https://www.postman.com/downloads/). 
+>- Baixe ou clone o [Repositório do GitHub](https://github.com/rafaelalvesitm/tutoriais-do-fiware).
+>- Importe o arquivo `Tutoriais do Fiware.postman_collection.json` para o Postman.
+>- Abra o Docker no computador.
+>- Abra o Postman Agent no computador. 
 
-> **Você pode obter todos os arquivos necessários para este tutorial no seguinte link: [Tutoriais no GitHub](https://github.com/rafaelalvesitm/my_fiware_tutorials) e indo para a pasta `tutorial7`. Existe um arquivo `docker-compose.yml` usado para criar o tutorial usando o Docker um arquivo `tutorial7.postman_collection.json` usado para importar as solicitações deste tutorial para o Postman**.
+# Vídeo do tutorial
+
+<iframe width="100%" height=100% style="aspect-ratio: 16/9" src="https://www.youtube.com/embed/5LAg3Wvvsrk" allowfullscreen></iframe>
+
+Caso o player não funcione utilize o link: [IoT Agent Ultralight sobre MQTT - Tutoriais do FIWARE #8 - YouTube](https://www.youtube.com/watch?v=5LAg3Wvvsrk)
 
 ## O que é MQTT?
 

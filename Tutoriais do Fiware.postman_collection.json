@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Tutorial 1",
+			"name": "Tutorial 1 - Introdução ao Fiware",
 			"item": [
 				{
 					"name": "Verifique a saúde do Orion",
@@ -151,7 +151,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1026/v2/entities?options=keyValues&q=name==Carrefour",
+							"raw": "http://localhost:1026/v2/entities?type=Store&options=keyValues&q=name==Carrefour",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -164,8 +164,7 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "Building",
-									"disabled": true
+									"value": "Store"
 								},
 								{
 									"key": "options",
@@ -186,7 +185,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1026/v2/entities?options=keyValues&q=address.addressLocality==%27S%C3%A3o%20Bernardo%20do%20Campo%27",
+							"raw": "http://localhost:1026/v2/entities?type=Store&options=keyValues&q=address.addressLocality==%27S%C3%A3o%20Bernardo%20do%20Campo%27",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -199,8 +198,7 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "Building",
-									"disabled": true
+									"value": "Store"
 								},
 								{
 									"key": "options",
@@ -221,7 +219,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1026/v2/entities?options=keyValues&mq=address.verified==true",
+							"raw": "http://localhost:1026/v2/entities?type=Store&options=keyValues&mq=address.verified==true",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -234,8 +232,7 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "Building",
-									"disabled": true
+									"value": "Store"
 								},
 								{
 									"key": "options",
@@ -295,13 +292,41 @@
 			]
 		},
 		{
-			"name": "Tutorial 2",
+			"name": "Tutorial 2 - Entidades e relacionamentos",
 			"item": [
 				{
 					"name": "Preparando o tutorial 2",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"actionType\": \"append\",\r\n    \"entities\": [\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Store:001\",\r\n            \"type\": \"Store\",\r\n            \"address\": {\r\n                \"type\": \"PostalAddress\",\r\n                \"value\": {\r\n                    \"streetAddress\": \"Avenida Maria Servidei Demarchi, 398\",\r\n                    \"addressRegion\": \"São Paulo\",\r\n                    \"addressLocality\": \"São Bernardo do Campo\",\r\n                    \"postalCode\": \"09820-000\"\r\n                },\r\n                \"metadata\": {\r\n                    \"verified\": {\r\n                        \"value\": true,\r\n                        \"type\": \"Boolean\"\r\n                    }\r\n                }\r\n            },\r\n            \"location\": {\r\n                \"type\": \"geo:json\",\r\n                \"value\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -46.55250126146248,\r\n                        -23.726831522796758\r\n                    ]\r\n                }\r\n            },\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Carrefour\"\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Store:002\",\r\n            \"type\": \"Store\",\r\n            \"address\": {\r\n                \"type\": \"PostalAddress\",\r\n                \"value\": {\r\n                    \"streetAddress\": \"Avenida Humberto de Alencar Castelo Branco, 3100\",\r\n                    \"addressRegion\": \"São Paulo\",\r\n                    \"addressLocality\": \"São Bernardo do Campo\",\r\n                    \"postalCode\": \"09851-070\"\r\n                },\r\n                \"metadata\": {\r\n                    \"verified\": {\r\n                        \"value\": true,\r\n                        \"type\": \"Boolean\"\r\n                    }\r\n                }\r\n            },\r\n            \"location\": {\r\n                \"type\": \"geo:json\",\r\n                \"value\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -46.5845790329862,\r\n                        -23.71624047588308\r\n                    ]\r\n                }\r\n            },\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Bem Barato\"\r\n            }\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/op/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"op",
+								"update"
+							]
+						}
 					},
 					"response": []
 				},
@@ -645,7 +670,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1026/v2/entities?options=values&type=InventoryItem&q=refStore==urn:ngsi-ld:Store:001&attrs=refProduct",
+							"raw": "http://localhost:1026/v2/entities?options=values&type=InventoryItem&q=refProduct==urn:ngsi-ld:Product:001&attrs=refStore",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -666,11 +691,11 @@
 								},
 								{
 									"key": "q",
-									"value": "refStore==urn:ngsi-ld:Store:001"
+									"value": "refProduct==urn:ngsi-ld:Product:001"
 								},
 								{
 									"key": "attrs",
-									"value": "refProduct"
+									"value": "refStore"
 								}
 							]
 						}
@@ -683,7 +708,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1026/v2/entities?options=values&type=InventoryItem&q=refStore==urn:ngsi-ld:Store:001&attrs=refProduct",
+							"raw": "http://localhost:1026/v2/entities?options=keyValues&q=refStore==urn:ngsi-ld:Store:001&attrs=id",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -696,11 +721,12 @@
 							"query": [
 								{
 									"key": "options",
-									"value": "values"
+									"value": "keyValues"
 								},
 								{
 									"key": "type",
-									"value": "InventoryItem"
+									"value": "InventoryItem",
+									"disabled": true
 								},
 								{
 									"key": "q",
@@ -708,7 +734,34 @@
 								},
 								{
 									"key": "attrs",
-									"value": "refProduct"
+									"value": "id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter entidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1026/v2/entities",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							],
+							"query": [
+								{
+									"key": "options",
+									"value": "keyValues",
+									"disabled": true
 								}
 							]
 						}
@@ -718,8 +771,74 @@
 			]
 		},
 		{
-			"name": "Tutorial 3",
+			"name": "Tutorial 3 - Operações CRUD",
 			"item": [
+				{
+					"name": "Obter entidades",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:1026/v2/entities?options=keyValues&type=Product",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities"
+							],
+							"query": [
+								{
+									"key": "options",
+									"value": "keyValues"
+								},
+								{
+									"key": "type",
+									"value": "Product"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Preparando o tutorial 3",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"actionType\": \"append\",\r\n    \"entities\": [\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Store:001\",\r\n            \"type\": \"Store\",\r\n            \"address\": {\r\n                \"type\": \"PostalAddress\",\r\n                \"value\": {\r\n                    \"streetAddress\": \"Avenida Maria Servidei Demarchi, 398\",\r\n                    \"addressRegion\": \"São Paulo\",\r\n                    \"addressLocality\": \"São Bernardo do Campo\",\r\n                    \"postalCode\": \"09820-000\"\r\n                },\r\n                \"metadata\": {\r\n                    \"verified\": {\r\n                        \"type\": \"Boolean\",\r\n                        \"value\": true\r\n                    }\r\n                }\r\n            },\r\n            \"location\": {\r\n                \"type\": \"geo:json\",\r\n                \"value\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -46.552501261,\r\n                        -23.726831523\r\n                    ]\r\n                },\r\n                \"metadata\": {}\r\n            },\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Carrefour\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Store:002\",\r\n            \"type\": \"Store\",\r\n            \"address\": {\r\n                \"type\": \"PostalAddress\",\r\n                \"value\": {\r\n                    \"streetAddress\": \"Avenida Humberto de Alencar Castelo Branco, 3100\",\r\n                    \"addressRegion\": \"São Paulo\",\r\n                    \"addressLocality\": \"São Bernardo do Campo\",\r\n                    \"postalCode\": \"09851-070\"\r\n                },\r\n                \"metadata\": {\r\n                    \"verified\": {\r\n                        \"type\": \"Boolean\",\r\n                        \"value\": true\r\n                    }\r\n                }\r\n            },\r\n            \"location\": {\r\n                \"type\": \"geo:json\",\r\n                \"value\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -46.584579033,\r\n                        -23.716240476\r\n                    ]\r\n                },\r\n                \"metadata\": {}\r\n            },\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Bem Barato\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Shelf:unit001\",\r\n            \"type\": \"Shelf\",\r\n            \"location\": {\r\n                \"type\": \"geo:json\",\r\n                \"value\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -46.552501261,\r\n                        -23.726831523\r\n                    ]\r\n                },\r\n                \"metadata\": {}\r\n            },\r\n            \"maxCapacity\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 50,\r\n                \"metadata\": {}\r\n            },\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Corner Unit\",\r\n                \"metadata\": {}\r\n            },\r\n            \"refStore\": {\r\n                \"type\": \"Relationship\",\r\n                \"value\": \"urn:ngsi-ld:Store:001\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Shelf:unit002\",\r\n            \"type\": \"Shelf\",\r\n            \"location\": {\r\n                \"type\": \"geo:json\",\r\n                \"value\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -46.552501261,\r\n                        -23.726831523\r\n                    ]\r\n                },\r\n                \"metadata\": {}\r\n            },\r\n            \"maxCapacity\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 100,\r\n                \"metadata\": {}\r\n            },\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Wall Unit 1\",\r\n                \"metadata\": {}\r\n            },\r\n            \"refStore\": {\r\n                \"type\": \"Relationship\",\r\n                \"value\": \"urn:ngsi-ld:Store:001\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Shelf:unit003\",\r\n            \"type\": \"Shelf\",\r\n            \"location\": {\r\n                \"type\": \"geo:json\",\r\n                \"value\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -46.552501261,\r\n                        -23.726831523\r\n                    ]\r\n                },\r\n                \"metadata\": {}\r\n            },\r\n            \"maxCapacity\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 100,\r\n                \"metadata\": {}\r\n            },\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Wall Unit 2\",\r\n                \"metadata\": {}\r\n            },\r\n            \"refStore\": {\r\n                \"type\": \"Relationship\",\r\n                \"value\": \"urn:ngsi-ld:Store:001\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Shelf:unit004\",\r\n            \"type\": \"Shelf\",\r\n            \"location\": {\r\n                \"type\": \"geo:json\",\r\n                \"value\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -46.552501261,\r\n                        -23.726831523\r\n                    ]\r\n                },\r\n                \"metadata\": {}\r\n            },\r\n            \"maxCapacity\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 50,\r\n                \"metadata\": {}\r\n            },\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Corner Unit\",\r\n                \"metadata\": {}\r\n            },\r\n            \"refStore\": {\r\n                \"type\": \"Relationship\",\r\n                \"value\": \"urn:ngsi-ld:Store:002\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Shelf:unit005\",\r\n            \"type\": \"Shelf\",\r\n            \"location\": {\r\n                \"type\": \"geo:json\",\r\n                \"value\": {\r\n                    \"type\": \"Point\",\r\n                    \"coordinates\": [\r\n                        -46.552501261,\r\n                        -23.726831523\r\n                    ]\r\n                },\r\n                \"metadata\": {}\r\n            },\r\n            \"maxCapacity\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 200,\r\n                \"metadata\": {}\r\n            },\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Long Wall Unit\",\r\n                \"metadata\": {}\r\n            },\r\n            \"refStore\": {\r\n                \"type\": \"Relationship\",\r\n                \"value\": \"urn:ngsi-ld:Store:002\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:001\",\r\n            \"type\": \"Product\",\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Beer\",\r\n                \"metadata\": {}\r\n            },\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 99,\r\n                \"metadata\": {}\r\n            },\r\n            \"size\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"S\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:002\",\r\n            \"type\": \"Product\",\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Red Wine\",\r\n                \"metadata\": {}\r\n            },\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1099,\r\n                \"metadata\": {}\r\n            },\r\n            \"size\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"M\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:003\",\r\n            \"type\": \"Product\",\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"White Wine\",\r\n                \"metadata\": {}\r\n            },\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 1499,\r\n                \"metadata\": {}\r\n            },\r\n            \"size\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"M\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:Product:004\",\r\n            \"type\": \"Product\",\r\n            \"name\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"Vodka\",\r\n                \"metadata\": {}\r\n            },\r\n            \"price\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 5000,\r\n                \"metadata\": {}\r\n            },\r\n            \"size\": {\r\n                \"type\": \"Text\",\r\n                \"value\": \"XL\",\r\n                \"metadata\": {}\r\n            }\r\n        },\r\n        {\r\n            \"id\": \"urn:ngsi-ld:InventoryItem:001\",\r\n            \"type\": \"InventoryItem\",\r\n            \"refProduct\": {\r\n                \"type\": \"Relationship\",\r\n                \"value\": \"urn:ngsi-ld:Product:001\",\r\n                \"metadata\": {}\r\n            },\r\n            \"refShelf\": {\r\n                \"type\": \"Relationship\",\r\n                \"value\": \"urn:ngsi-ld:Shelf:unit001\",\r\n                \"metadata\": {}\r\n            },\r\n            \"refStore\": {\r\n                \"type\": \"Relationship\",\r\n                \"value\": \"urn:ngsi-ld:Store:001\",\r\n                \"metadata\": {}\r\n            },\r\n            \"shelfCount\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 50,\r\n                \"metadata\": {}\r\n            },\r\n            \"stockCount\": {\r\n                \"type\": \"Integer\",\r\n                \"value\": 10000,\r\n                \"metadata\": {}\r\n            }\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/op/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"op",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
 				{
 					"name": "Criar um produto",
 					"request": {
@@ -810,7 +929,7 @@
 					"response": []
 				},
 				{
-					"name": "Criar 2 produtos com oferta especial",
+					"name": "Criar 2 produtos",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -1025,7 +1144,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1026/v2/entities/?type=Product&attrs=name, price&options=keyValues",
+							"raw": "http://localhost:1026/v2/entities/?type=Product&attrs=name,price&options=keyValues",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1043,7 +1162,7 @@
 								},
 								{
 									"key": "attrs",
-									"value": "name, price"
+									"value": "name,price"
 								},
 								{
 									"key": "options",
@@ -1096,13 +1215,13 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "text/plain",
+								"value": "application/json",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "89\r\n",
+							"raw": "89",
 							"options": {
 								"raw": {
 									"language": "text"
@@ -1128,6 +1247,11 @@
 								{
 									"key": "type",
 									"value": "Product"
+								},
+								{
+									"key": "options",
+									"value": "keyValues",
+									"disabled": true
 								}
 							]
 						}
@@ -1363,7 +1487,7 @@
 			]
 		},
 		{
-			"name": "Tutorial 4",
+			"name": "Tutorial 4 - Provedores de contexto",
 			"item": [
 				{
 					"name": "Verificar saúde",
@@ -1397,7 +1521,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"entities\": [\r\n        {\r\n            \"type\": \"Store\",\r\n            \"isPattern\": \"false\",\r\n            \"id\": \"urn:ngsi-ld:Store:001\"\r\n        }\r\n    ],\r\n    \"attrs\": [\r\n        \"temperature\",\r\n        \"relativeHumidity\"\r\n    ]\r\n}"
+							"raw": "{\r\n    \"entities\": [\r\n        {\r\n            \"type\": \"Store\",\r\n            \"isPattern\": \"false\",\r\n            \"id\": \"urn:ngsi-ld:Store:001\"\r\n        }\r\n    ],\r\n    \"attrs\": [\r\n        \"temperature\",\r\n        \"relativeHumidity\"\r\n    ]\r\n}\r\n"
 						},
 						"url": {
 							"raw": "http://localhost:5000/op/query",
@@ -1480,7 +1604,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001",
+							"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?type=Store&options=keyValues",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1494,8 +1618,11 @@
 							"query": [
 								{
 									"key": "type",
-									"value": "Store",
-									"disabled": true
+									"value": "Store"
+								},
+								{
+									"key": "options",
+									"value": "keyValues"
 								}
 							]
 						}
@@ -1546,7 +1673,7 @@
 			]
 		},
 		{
-			"name": "Tutorial 5",
+			"name": "Tutorial 5 - Assinaturas no Orion",
 			"item": [
 				{
 					"name": "Criar um produto",
@@ -1591,7 +1718,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Notify me of all product price changes\",\r\n    \"subject\": {\r\n        \"entities\": [\r\n            {\r\n                \"idPattern\": \".*\",\r\n                \"type\": \"Product\"\r\n            }\r\n        ],\r\n        \"condition\": {\r\n            \"attrs\": [\r\n                \"price\"\r\n            ]\r\n        }\r\n    },\r\n    \"notification\": {\r\n        \"http\": {\r\n            \"url\": \"http://context-provider:5000/priceChange\"\r\n        }\r\n    }\r\n}",
+							"raw": "{\r\n    \"description\": \"Notify me of all product price changes\",\r\n    \"subject\": {\r\n        \"entities\": [\r\n            {\r\n                \"idPattern\": \"urn:ngsi-ld:Product:010\",\r\n                \"type\": \"Product\"\r\n            }\r\n        ],\r\n        \"condition\": {\r\n            \"attrs\": [\r\n                \"price\"\r\n            ]\r\n        }\r\n    },\r\n    \"notification\": {\r\n        \"http\": {\r\n            \"url\": \"http://context-provider:5000/priceChange\"\r\n        }\r\n    }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1626,7 +1753,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"price\": {\r\n        \"type\": \"Integer\",\r\n        \"value\": 70\r\n    }\r\n}"
+							"raw": "{\r\n    \"price\": {\r\n        \"type\": \"Integer\",\r\n        \"value\": 40\r\n    }\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Product:010/attrs?type=Product",
@@ -1646,6 +1773,41 @@
 									"key": "type",
 									"value": "Product"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Criar uma assinatura simplificada",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"Notify me of all product price changes when less than 50\",\r\n    \"subject\": {\r\n        \"entities\": [\r\n            {\r\n                \"idPattern\": \"urn:ngsi-ld:Product:010\",\r\n                \"type\": \"Product\"\r\n            }\r\n        ],\r\n        \"condition\": {\r\n            \"attrs\": [\r\n                \"price\"\r\n            ],\r\n            \"expression\": {\r\n                \"q\": \"price<50;\"\r\n            }\r\n        }\r\n    },\r\n    \"notification\": {\r\n        \"http\": {\r\n            \"url\": \"http://context-provider:5000/priceChange\"\r\n        },\r\n        \"attrsFormat\": \"keyValues\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions"
 							]
 						}
 					},
@@ -1713,7 +1875,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:1026/v2/subscriptions/633ebd2c1007af0e6472062b",
+							"raw": "http://localhost:1026/v2/subscriptions/6357ccb0e3cec219833de1dc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1722,7 +1884,7 @@
 							"path": [
 								"v2",
 								"subscriptions",
-								"633ebd2c1007af0e6472062b"
+								"6357ccb0e3cec219833de1dc"
 							]
 						}
 					},
@@ -1734,7 +1896,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:1026/v2/subscriptions/633ebd2c1007af0e6472062b",
+							"raw": "http://localhost:1026/v2/subscriptions/6357ccb0e3cec219833de1dc",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -1743,42 +1905,7 @@
 							"path": [
 								"v2",
 								"subscriptions",
-								"633ebd2c1007af0e6472062b"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Criar uma assinatura simplificada",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"description\": \"Notify me of all product price changes\",\r\n    \"subject\": {\r\n        \"entities\": [\r\n            {\r\n                \"idPattern\": \".*\",\r\n                \"type\": \"Product\"\r\n            }\r\n        ],\r\n        \"condition\": {\r\n            \"attrs\": [\r\n                \"price\"\r\n            ],\r\n            \"expression\": {\r\n                \"q\": \"price<50;\"\r\n            }\r\n        }\r\n    },\r\n    \"notification\": {\r\n        \"http\": {\r\n            \"url\": \"http://context-provider:5000/priceChange\"\r\n        }\r\n    },\r\n    \"attrsFormat\": \"keyValues\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:1026/v2/subscriptions",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "1026",
-							"path": [
-								"v2",
-								"subscriptions"
+								"6357ccb0e3cec219833de1dc"
 							]
 						}
 					},
@@ -1787,7 +1914,7 @@
 			]
 		},
 		{
-			"name": "Tutorial 6",
+			"name": "Tutorial 6 - Agente IoT JSON sobre HTTP",
 			"item": [
 				{
 					"name": "Criar um serviço",
@@ -1857,7 +1984,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"devices\": [\r\n        {\r\n            \"device_id\": \"device001\",\r\n            \"entity_name\": \"urn:ngsi-ld:Device:001\",\r\n            \"entity_type\": \"Device\",\r\n            \"transport\": \"HTTP\",\r\n            \"endpoint\": \"http://dummy-device:80/device1\",\r\n            \"attributes\": [\r\n                {\r\n                    \"object_id\": \"t\",\r\n                    \"name\": \"temperature\",\r\n                    \"type\": \"Number\"\r\n                },\r\n                {\r\n                    \"object_id\": \"rh\",\r\n                    \"name\": \"relativeHumidity\",\r\n                    \"type\": \"Number\"\r\n                }\r\n            ],\r\n            \"commands\": [\r\n                {\r\n                    \"name\": \"switch\",\r\n                    \"type\": \"command\"\r\n                }\r\n            ],\r\n            \"static_attributes\": [\r\n                {\r\n                    \"name\": \"refStore\",\r\n                    \"type\": \"Relationship\",\r\n                    \"value\": \"urn:ngsi-ld:Store:001\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+							"raw": "{\r\n    \"devices\": [\r\n        {\r\n            \"device_id\": \"device001\",\r\n            \"entity_name\": \"urn:ngsi-ld:Device:001\",\r\n            \"entity_type\": \"Device\",\r\n            \"transport\": \"HTTP\",\r\n            \"endpoint\": \"http://dummy-device:80/dht22\",\r\n            \"attributes\": [\r\n                {\r\n                    \"object_id\": \"temperature\",\r\n                    \"name\": \"temperature\",\r\n                    \"type\": \"Number\"\r\n                },\r\n                {\r\n                    \"object_id\": \"humidity\",\r\n                    \"name\": \"relativeHumidity\",\r\n                    \"type\": \"Number\"\r\n                }\r\n            ],\r\n            \"commands\": [\r\n                {\r\n                    \"name\": \"start\",\r\n                    \"type\": \"command\"\r\n                },\r\n                {\r\n                    \"name\": \"stop\",\r\n                    \"type\": \"command\"\r\n                },{\r\n                    \"name\": \"interval\",\r\n                    \"type\": \"command\"\r\n                }\r\n            ],\r\n            \"static_attributes\": [\r\n                {\r\n                    \"name\": \"refStore\",\r\n                    \"type\": \"Relationship\",\r\n                    \"value\": \"urn:ngsi-ld:Store:001\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1902,7 +2029,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"t\": 10,\r\n    \"rh\" : 50\r\n}",
+							"raw": "{\r\n    \"temperature\": 10,\r\n    \"humidity\" : 50\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1999,7 +2126,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"switch\": {\r\n        \"type\": \"command\",\r\n        \"value\": \"\"     \r\n    }\r\n}"
+							"raw": "{\r\n    \"interval\": {\r\n        \"type\": \"command\",\r\n        \"value\": \"15\"     \r\n    }\r\n}"
 						},
 						"url": {
 							"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Device:001/attrs?type=Device",
@@ -2027,7 +2154,7 @@
 			]
 		},
 		{
-			"name": "Tutorial 7",
+			"name": "Tutorial 7 - Agent IoT Ultralight sobre MQTT",
 			"item": [
 				{
 					"name": "Verificar saúde do Agente IoT",
@@ -2274,7 +2401,7 @@
 			]
 		},
 		{
-			"name": "Tutorial 8",
+			"name": "Tutorial 8 - Persistindo e visualizando dados",
 			"item": [
 				{
 					"name": "Verificar saúde do Cygnus",
@@ -2470,7 +2597,7 @@
 					"response": []
 				},
 				{
-					"name": "Asinnar a mudanças no contexto",
+					"name": "Assinar a mudanças no contexto",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -2507,12 +2634,434 @@
 						"description": "Once a dynamic context system is up and running, we need to inform **Cygnus** of changes in context.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that Cygnus will be informed of all context data changes.\n* The notification `url` must match the configured `CYGNUS_MYSQL_SERVICE_PORT`\n* The `attrsFormat=legacy` is required since Cygnus currently only accepts notifications in the older NGSI v1 format.\n* The `throttling` value defines the rate that changes are sampled.\n\nAs you can see, the database used to persist context data has no impact on the details of the subscription. It is the same for each database."
 					},
 					"response": []
+				},
+				{
+					"name": "Assinar a mudanças simplificado",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "openiot"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"SUbscription to Cygnus\",\n    \"subject\": {\n        \"entities\": [\n            {\n                \"id\": \"urn:ngsi-ld:Device:001\",\n                \"type\": \"Device\"\n            }\n        ],\n        \"condition\": {\n            \"attrs\": [\n                \"temperature\"\n            ]\n        }\n    },\n    \"notification\": {\n        \"http\": {\n            \"url\": \"http://cygnus:5050/notify\"\n        },\n        \"attrs\": [\n            \"temperature\",\n            \"relativeHumidity\"\n        ]\n    },\n    \"throttling\": 5\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions",
+								""
+							]
+						},
+						"description": "Once a dynamic context system is up and running, we need to inform **Cygnus** of changes in context.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that Cygnus will be informed of all context data changes.\n* The notification `url` must match the configured `CYGNUS_MYSQL_SERVICE_PORT`\n* The `attrsFormat=legacy` is required since Cygnus currently only accepts notifications in the older NGSI v1 format.\n* The `throttling` value defines the rate that changes are sampled.\n\nAs you can see, the database used to persist context data has no impact on the details of the subscription. It is the same for each database."
+					},
+					"response": []
+				},
+				{
+					"name": "Obter assinatura",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "openiot",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar assinatura",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "openiot",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions/635fc3abd5aba179cf2c171d",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions",
+								"635fc3abd5aba179cf2c171d"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "Tutorial 9",
-			"item": []
+			"name": "Tutorial 9 - Caso de uso",
+			"item": [
+				{
+					"name": "Criar serviço",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "openiot"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"services\": [\n        {\n            \"apikey\": \"4jggokgpepnvsb2uv4s40d59ov\",\n            \"cbroker\": \"http://orion:1026\",\n            \"entity_type\": \"Device\",\n            \"resource\": \"/iot/json\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "http://localhost:4041/iot/services",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"services"
+							]
+						},
+						"description": "Invoking group provision is always the the first step in connecting devices. For MQTT communication, provisioning supplies the authentication key so the IoT Agent will know which **topic** it must\nsubscribe to.\n\nIt is possible to set up default commands and attributes for all devices as well, but this\nis not done within this tutorial as we will be provisioning each device separately.\n\nThis example provisions an anonymous group of devices. It tells the IoT Agent that a series of devices\nwill be communicating by sending messages to the `/4jggokgpepnvsb2uv4s40d59ov` **topic**\n\nThe `resource` attribute is left blank since HTTP communication is not being used."
+					},
+					"response": []
+				},
+				{
+					"name": "Criar dispositivo",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "fiware-service",
+								"value": "openiot",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"devices\": [\r\n        {\r\n            \"device_id\": \"device_001\",\r\n            \"entity_name\": \"urn:ngsi-ld:Device:001\",\r\n            \"entity_type\": \"Device\",\r\n            \"transport\": \"HTTP\",\r\n            \"endpoint\": \"http://192.168.15.8:5000/Device/001\",\r\n            \"timezone\": \"America/Sao_Paulo\",\r\n            \"attributes\": [\r\n                {\r\n                    \"object_id\": \"t\",\r\n                    \"name\": \"temperature\",\r\n                    \"type\": \"Number\"\r\n                },\r\n                {\r\n                    \"object_id\": \"rh\",\r\n                    \"name\": \"relativeHumidity\",\r\n                    \"type\": \"Number\"\r\n                }\r\n            ],\r\n            \"commands\": [\r\n                {\r\n                    \"name\": \"switch\",\r\n                    \"type\": \"command\"\r\n                },\r\n                {\r\n                    \"name\": \"interval\",\r\n                    \"type\": \"command\"\r\n                }\r\n            ],\r\n            \"static_attributes\": [\r\n                {\r\n                    \"name\": \"refStore\",\r\n                    \"type\": \"Relationship\",\r\n                    \"value\": \"urn:ngsi-ld:Store:001\"\r\n                }\r\n            ]\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4041/iot/devices",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4041",
+							"path": [
+								"iot",
+								"devices"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Iniciar envio dos dados",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "openiot",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"switch\": {\r\n        \"type\": \"command\",\r\n        \"value\": \"\"     \r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Device:001/attrs?type=Device",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:Device:001",
+								"attrs"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "Device"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar intervalo",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "openiot",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"interval\": {\r\n        \"type\": \"command\",\r\n        \"value\": \"10\"     \r\n    }\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Device:001/attrs?type=Device",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:Device:001",
+								"attrs"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "Device"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obter dispositivo",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "openiot",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1026/v2/entities/urn:ngsi-ld:Device:001?options=keyValues",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"entities",
+								"urn:ngsi-ld:Device:001"
+							],
+							"query": [
+								{
+									"key": "options",
+									"value": "keyValues"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assinar a mudanças no contexto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "fiware-service",
+								"value": "openiot"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"SUbscription to Cygnus\",\n    \"subject\": {\n        \"entities\": [\n            {\n                \"id\": \"urn:ngsi-ld:Device:001\",\n                \"type\": \"Device\"\n            }\n        ],\n        \"condition\": {\n            \"attrs\": [\n                \"temperature\"\n            ]\n        }\n    },\n    \"notification\": {\n        \"http\": {\n            \"url\": \"http://cygnus:5050/notify\"\n        },\n        \"attrs\": [\n            \"temperature\",\n            \"relativeHumidity\"\n        ]\n    },\n    \"throttling\": 5\n}"
+						},
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions",
+								""
+							]
+						},
+						"description": "Once a dynamic context system is up and running, we need to inform **Cygnus** of changes in context.\n\nThis is done by making a POST request to the `/v2/subscription` endpoint of the Orion Context Broker.\n\n* The `fiware-service` and `fiware-servicepath` headers are used to filter the subscription to only listen to measurements from the attached IoT Sensors\n* The `idPattern` in the request body ensures that Cygnus will be informed of all context data changes.\n* The notification `url` must match the configured `CYGNUS_MYSQL_SERVICE_PORT`\n* The `attrsFormat=legacy` is required since Cygnus currently only accepts notifications in the older NGSI v1 format.\n* The `throttling` value defines the rate that changes are sampled.\n\nAs you can see, the database used to persist context data has no impact on the details of the subscription. It is the same for each database."
+					},
+					"response": []
+				},
+				{
+					"name": "Obter assinatura Copy",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "openiot",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar assinatura Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "fiware-service",
+								"value": "openiot",
+								"type": "text"
+							},
+							{
+								"key": "fiware-servicepath",
+								"value": "/",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:1026/v2/subscriptions/6351817e827118157d55197f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "1026",
+							"path": [
+								"v2",
+								"subscriptions",
+								"6351817e827118157d55197f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

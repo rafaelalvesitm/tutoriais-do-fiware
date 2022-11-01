@@ -1,4 +1,3 @@
-import RPi.GPIO as GPIO
 import random
 import time
 import json
@@ -34,9 +33,9 @@ def dht22():
         elif "stop" in data:
             if SEND.value == True:
                 SEND.value = False
-                return make_response(json.dumps({'start': 'DHT22 stopped'}), 200)
+                return make_response(json.dumps({'stop': 'DHT22 stopped'}), 200)
             elif SEND.value == False:
-                return make_response(json.dumps({'start': 'DHT22 already stopped'}), 200)
+                return make_response(json.dumps({'stop': 'DHT22 already stopped'}), 200)
             else:
                 return make_response(json.dumps({'error': 'Method not allowed'}), 405)
         elif "interval" in data:
@@ -56,7 +55,7 @@ def sendData():
             humidity = random.randint(0,100)
             temperature = random.randint(10,40)
 
-            url = "http://10.42.0.16:7896/iot/json?k=4jggokgpepnvsb2uv4s40d59ov1&i=dht22_001"
+            url = "http://fiware-iot-agent-json:7896/iot/json?k=4jggokgpepnvsb2uv4s40d59ov&i=device001"
 
             payload = json.dumps({
                 "temperature": temperature,

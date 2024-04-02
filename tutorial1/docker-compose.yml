@@ -16,50 +16,51 @@
 # 
 # see: https://github.com/FIWARE/helm-charts/
 #
-# OBS: This document is a modification of the one provided by FIWARE in its tutorials. 
-# OBS: Be very careful with indentation
+# OBS: Este documento é uma modificação do documento origial providenciado pela fundação FIWARE. 
+# OBS: Tome bastante cuidado com a identação. O arquivo YAML é sensível a identação.
 
-version: "3.8" # Version for the docker compose
+version: "3.8" # Versão do docker-compose
 services:
 
-  # Orion is the context broker
+  # Orion Context Broker é o principal componente do FIWARE. Ele é responsável por armazenar e gerenciar as entidades.
   orion:
-    image: fiware/orion:3.7.0 # Loads this image from Docker Hub
-    hostname: orion # Create a hostname to be easier to find the container in the network
-    container_name: fiware-orion # Create a container name to be easier to get information for it
+    image: fiware/orion:3.7.0 # Carrega a imagem do Orion Context Broker do Docker Hub
+    hostname: orion # Cria um hostname para ser mais fácil encontrar o container na rede
+    container_name: fiware-orion # Cria um nome para o container para ser mais fácil obter informações sobre ele
     depends_on:
-      - mongo-db # Database for persinting eantity information from orion
+      - mongo-db # Dependente do banco de dados Mongo DB, só inicia quando o banco de dados estiver pronto
     networks:
-      - default # Users a local network called default
+      - default # Usa uma rede local chamada default
     ports:
-      - "1026:1026" # match port 1026 on the machine to the one in the container
-    command: -dbhost mongo-db -logLevel DEBUG -noCache
-    healthcheck: # check if orion is healthy
+      - "1026:1026" # Mapeia a porta 1026 da máquina para a porta 1026 do container
+    command: -dbhost mongo-db -logLevel DEBUG -noCache # Comando para iniciar o Orion Context Broker
+    healthcheck: # Verifica se o Orion Context Broker está saudável
       test: curl --fail -s http://orion:1026/version || exit 1
-      interval: 10s
+      interval: 10s # Intervalo de tempo para verificar a saúde do Orion Context Broker
 
 
-  # Databases
+  # Mongo DB é o banco de dados utilizado pelo Orion Context Broker para armazenar as entidades
   mongo-db:
-    image: mongo:4.4 # Loads this image from Docker Hub
-    hostname: mongo-db # Create a hostname to be easier to find the container in the network
-    container_name: db-mongo # Create a container name to be easier to get information for it
+    image: mongo:4.4 # Carrega a imagem do Mongo DB do Docker Hub
+    hostname: mongo-db # Cria um hostname para ser mais fácil encontrar o container na rede
+    container_name: db-mongo # Cria um nome para o container para ser mais fácil obter informações sobre ele
     expose:
-      - "27017" # Expose this port to the network
+      - "27017" # Expõe a porta 27017 do container
     ports:
-      - "27017:27017" # match port 27017 on the machine to the one in the container
+      - "27017:27017" # Mapeia a porta 27017 da máquina para a porta 27017 do container
     networks:
-      - default # Users a local network called default
-    volumes: # Uses a volume to persit the data in the database
+      - default # Usa uma rede local chamada default
+    volumes: # Cria um volume para persistir os dados no banco de dados
       - mongo-db:/data
-    healthcheck: # check if Mongo DB is healthy
+    healthcheck: # Verifica se o Mongo DB está saudável
       test: |
         host=`hostname --ip-address || echo '127.0.0.1'`; 
         mongo --quiet $host/test --eval 'quit(db.runCommand({ ping: 1 }).ok ? 0 : 2)' && echo 0 || echo 1
-      interval: 5s
+      interval: 5s # Intervalo de tempo para verificar a saúde do Mongo DB
     
 
-networks: # Create a network for the docker containers
-  default:
-volumes: # Creates a volume to persit the data in the database
+networks: # Cria uma rede local chamada default
+  default: # Nome da rede local
+    driver: bridge # Tipo de driver da rede local
+volumes: # Cria um volume para persistir os dados no banco de dados, caso o container seja removido ou reiniciado os dados não serão perdidos. 
   mongo-db: ~

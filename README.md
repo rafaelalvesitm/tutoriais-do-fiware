@@ -1,22 +1,21 @@
 # Tutoriais FIWARE
 
-Este repositório contém vários tutoriais para usar [FIWARE](https://www.fiware.org/). Todos os tutoriais aqui são baseados nos fornecidos pelo FIWARE e podem ser vistos [Aqui](https://fiware-tutorials.readthedocs.io/en/latest/). Esses tutoriais são destinados para meu próprio processo de aprendizagem e para serem utilizados em minhas demonstrações dos recursos do FIWARE no Centro Universitário FEI.
+Este repositório contém vários tutoriais para usar [FIWARE](https://www.fiware.org/). Todos os tutoriais aqui apresentados são baseados nos [tutoriais fornecidos pelo FIWARE aqui](https://fiware-tutorials.readthedocs.io/en/latest/). Os tutorias aqui desenvolvidos foram criados com objetivo de apresentar a plataforma e suas funcionalidades através de vídeos e treinamentos. 
 
 # Descrição geral
 
-Cada tutorial é dividido em várias pastas neste repositório. A descrição de cada tutorial pode ser vista no [meu site pessoal](https://rafaelalvesitm.com/01+-+Notas+de+literatura/Plataforma+IoT+FIWARE) ou então no README de cada pasta. Estes tutoriais visam demonstrar a utilização dos seguintes componentes:
+Cada tutorial é dividido em uma determinada pasta aqui dentro deste repositório. Os detalhes de cada tutorial podem ser vistos no [meu site pessoal](https://www.rafaelalvesitm.com/). Estes tutoriais visam demonstrar a utilização dos seguintes componentes:
 
-- FIWARE Orion Context Broker.
-- FIWARE IoT Agent JSON.
-- FIWARE IoT Agent Ultralight.
-- FIWARE Cygnus.
-- MongoDB database.
-- MySQL database.
-- Grafana.
-- Context provider escrito utilizando o framework Flask.
-- Dummy-device escrito utilizando o framework Flask.
-
-Também é possivel acompanhar cada tutorial na [Playlist de vídeos no Youtube com os Tutoriais](https://youtube.com/playlist?list=PLOZst2b_z6LPZuhpv6WOOxW8b-fIANdFq)
+- FIWARE Orion Context Broker - Gerencidor de contexto e principal elemento da plataforma. 
+- FIWARE IoT Agent JSON. - Gerenciador de dispositivos com comunicação HTTP/MQTT e protocolo JSON com a plataforma. 
+- FIWARE IoT Agent Ultralight. - Gerenciador de dispositivos com comunicação HTTP/MQTT e protocolo Ultralight com a plataforma. 
+- FIWARE Cygnus - Conector entre o Orion Context Broker e bancos de dados relacionais como o MySQL e PostgreSQL. 
+- MongoDB database - Banco de dados para armazenamento de informações de configuração e operação dos componentes do FIWARE. 
+- MySQL database - Banco de dados para armazenamento de dados históricos dos componentes do FIWARE. 
+- Grafana - Aplicação para visualização de gráficos de forma iterativa. 
+- Mosquitto MQTT Broker - Broker MQTT para gestão de mensageria entre dispositivos e a plataforma. 
+- Context provider - Elemento genérico para disponibilização de informações de contexto, escrito utilizando o framework Flask.
+- Dummy-device - Elemento genérico para simulação de um dispositivo, escrito utilizando o framework Flask.
 
 ## Tutorial 1 - Introdução ao FIWARE
 

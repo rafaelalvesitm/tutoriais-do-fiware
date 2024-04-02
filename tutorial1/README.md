@@ -2,23 +2,16 @@
 
 Este tutorial fornece ao usuário informações sobre como usar os conceitos básicos do **[Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/)** com o protocolo [NGSI-v2](https://fiware.github.io/specifications/OpenAPI/ ngsiv2). Começaremos com os dados de vários edifícios e criaremos um aplicativo _“Powered by FIWARE”_ muito simples, passando o endereço e a localização de cada loja como dados de contexto para o agente de contexto FIWARE.
 
-# Requisitos 
+Este tutorial foi desenvolvido com base no tutorial oficial do FIWARE disponível em: [Getting Started with NGSI-v2 - Step-by-Step for NGSI-v2)](https://fiware-tutorials.readthedocs.io/en/latest/getting-started.html)
+
+# Requisitos
 
 >[!info] Antes de começar os tutoriais faça o seguinte:
-> - Instale o [Docker, Docker compose](https://www.docker.com/)  e o [Postman](https://www.postman.com/downloads/). 
+> - Instale o [Docker, Docker compose](https://www.docker.com/)  e o [Postman](https://www.postman.com/downloads/).
 >- Baixe ou clone o [Repositório do GitHub](https://github.com/rafaelalvesitm/tutoriais-do-fiware).
 >- Importe o arquivo `Tutoriais do Fiware.postman_collection.json` para o Postman.
 >- Abra o Docker no computador.
->- Abra o Postman Agent no computador. 
-
-# Vídeo do tutorial
-
-# Player
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/PSGLu1eodr4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
-
+>- Abra o Postman Agent no computador.
 # Arquitetura
 
 Nosso aplicativo de demonstração usará apenas um componente do FIWARE: o [Orion Context Broker](https://fiware-orion.readthedocs.io/en/latest/). Atualmente, o **Orion Context Broker** conta com a tecnologia de código aberto [MongoDB](https://www.mongodb.com/) para manter a persistência dos dados de contexto que ele contém. Portanto, a arquitetura consistirá em dois elementos:
@@ -28,34 +21,36 @@ Nosso aplicativo de demonstração usará apenas um componente do FIWARE: o [Ori
 
 Como todas as interações entre os dois serviços são iniciadas por solicitações HTTP, os serviços podem ser incluídos em contêineres e executados a partir de portas expostas. Isso significa que ao implantar cada componente é importante definir corretamente a rede na qual a solução irá operar (Isso tudo é definido do arquivo **docker-compose.yml** diponibilizado).
 
-![[Introduction to FIWARE - Architecture.png]]
-
-
+![[Tutorial do FIWARE 1.png]]
 # Iniciando os containers
 
-Baixe o arquivo zip ou clone o repositório disponível em [neste link](https://github.com/rafaelalvesitm/my_fiware_tutorials). Abra um terminal e se mova para a pasta `tutorial1`. Depois disso, todos os serviços podem ser inicializados a partir da linha de comando usando o comando `docker compose` conforme indicado abaixo:
+Baixe o arquivo zip ou clone o repositório disponível em [neste link](https://github.com/rafaelalvesitm/my_fiware_tutorials). Abra um terminal e se mova para a pasta `tutorial1` com o comando `cd tutorial1`. Depois disso, todos os serviços podem ser inicializados a partir da linha de comando usando o comando `docker compose` conforme indicado abaixo:
 
 ```bash
 docker compose up -d
 ```
 
-> **Observação:** Se você deseja limpar e começar de novo, pode fazê-lo com o seguinte comando:
-> `docker compose down` e depois utilizar o comando anterior.
+> **Observação** o sinalizador `-d` indica que o Docker deve executar os contêineres em segundo plano (`detached`), liberando o terminal para uso. Caso contrário, o log de todos os contêineres ficará sendo disponibilizado no terminal no qual o comando foi executado. 
 
-O sinalizador `-d` indica que o Docker deve executar os contêineres no modo `detached`, o que significa que os contêineres serão executados em segundo plano.
+> **Observação:** Se você deseja limpar e começar de novo, pode fazê-lo com o seguinte comando:  `docker compose down` e depois utilizar o comando anterior.
 
 > **Observação:** você pode verificar cada contêiner no aplicativo Docker ou no plug-in do Docker dentro do Visual Studio Code. Além disso pode usar o comando `docker compose ps -a` ou `docker ps -a` para listar todos os contêineres e avaliar a situação deles.
 
 # Criando seu primeiro aplicativo "Powered by FIWARE"
 
-Após este ponto, utilizaremos o Postman para enviar solicitações HTTP. Para acompanhar este tutorial importe a coleção `tutorial1.postman_collection.json` disponibilizado para a sua área de trabalho do Postman. 
+Após este ponto, utilizaremos o Postman para enviar solicitações HTTP. Para acompanhar este tutorial importe a coleção `tutorial1.postman_collection.json` disponibilizado para a sua área de trabalho do Postman.
 
 ## Verificando a integridade do serviço
 
-Você pode verificar se o **Orion Context Broker** está em execução fazendo uma solicitação GET para a seguinte URL: `http://localhost:1026/version`. 
+Você pode verificar se o **Orion Context Broker** está em execução fazendo uma solicitação GET para a seguinte URL: `http://localhost:1026/version`.
+
 
 >[!Info] **Envie a solicitação `Verifique a saúde do Orion`**.
->Esta solicitação recupera as informações do **Orion Context Broker**  caso este esteja funcionando adequadamente.
+>Esta solicitação recupera as informações do **Orion Context Broker** caso este esteja funcionando adequadamente.
+
+```bash
+curl --location 'http://localhost:1026/version'
+```
 
 A resposta será semelhante à seguinte:
 
@@ -63,7 +58,7 @@ A resposta será semelhante à seguinte:
 {
     "orion": {
         "version": "3.7.0",
-        "uptime": "0 d, 0 h, 0 m, 21 s",
+        "uptime": "0 d, 0 h, 0 m, 16 s",
         "git_hash": "8b19705a8ec645ba1452cb97847a5615f0b2d3ca",
         "compile_time": "Thu May 26 11:45:49 UTC 2022",
         "compiled_by": "root",
@@ -85,9 +80,9 @@ A resposta será semelhante à seguinte:
 }
 ```
 
-> **Observação:** **Localhost** refere-se ao dispositivo atual usado para acessá-lo, ou seja, o mesmo dispositivo que está enviando a solicitação. **Os contêineres Postman e Docker devem estar sendo executados na mesma máquina.** Se não estiverem, você precisará alterar **Localhost** para corresponder ao endereço IP onde os contêineres Docker estão localizados.
+> **Observação:** **Localhost** refere-se ao dispositivo atual usado para acessá-lo, ou seja, o mesmo dispositivo que está enviando a solicitação. **Os contêineres Postman e Docker devem estar sendo executados na mesma máquina.** Se não estiverem, você precisará alterar **Localhost** para corresponder ao endereço IP ou Hostname da máquina na qual os contêineres Docker estão localizados.
 
-> **Nota:** Se estiver usando **Windows Subsystem for Linux**, pode ser necessário executar `docker compose up -d` com privilégios de administrador, então use `sudo docker compose up -d`
+> **Nota:** Se estiver usando **Windows Subsystem for Linux**, pode ser necessário executar `docker compose up -d` com privilégios de administrador, então use `sudo docker compose up -d` ou então de permissão de administrador com os comandos `sudo groupadd docker`,  `sudo usermod -aG docker $USER` e `newgrp docker`. 
 
 ## Criando dados de contexto
 
@@ -95,12 +90,86 @@ Em sua essência, FIWARE é um sistema para gerenciar informações de contexto,
 
 >[!Info] **Envie a solicitação `Criar Loja 1`**
 >Esta é uma solicitação `POST` com um corpo JSON descrevendo uma entidade de uma loja.
-
 > Cada entidade deve ter um único `id` para um determinado `type`.
 
->[!Info] **Envie a solicitação `Criar Loja 2`**. 
->Esta é uma solicitação `POST` com um corpo JSON descrevendo uma entidade de uma loja. 
+```bash
+curl --location 'http://localhost:1026/v2/entities' \
+--header 'Content-Type: application/json' \
+--data '{
+    "id": "urn:ngsi-ld:Store:001",
+    "type": "Store",
+    "address": {
+        "type": "PostalAddress",
+        "value": {
+            "streetAddress": "Avenida Maria Servidei Demarchi, 398",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09820-000"
+        },
+        "metadata": {
+            "verified": {
+                "value": true,
+                "type": "Boolean"
+            }
+        }
+    },
+    "location": {
+        "type": "geo:json",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                -46.55250126146248,
+                -23.726831522796758
+            ]
+        }
+    },
+    "name": {
+        "type": "Text",
+        "value": "Carrefour"
+    }
+}'
+```
 
+>[!Info] **Envie a solicitação `Criar Loja 2`**.
+>Esta é uma solicitação `POST` com um corpo JSON descrevendo uma entidade de uma loja.
+
+```bash
+curl --location 'http://localhost:1026/v2/entities' \
+--header 'Content-Type: application/json' \
+--data '{
+    "id": "urn:ngsi-ld:Store:002",
+    "type": "Store",
+    "address": {
+        "type": "PostalAddress",
+        "value": {
+            "streetAddress": "Avenida Humberto de Alencar Castelo Branco, 3100",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09851-070"
+        },
+        "metadata": {
+            "verified": {
+                "value": true,
+                "type": "Boolean"
+            }
+        }
+    },
+    "location": {
+        "type": "geo:json",
+        "value": {
+            "type": "Point",
+            "coordinates": [
+                -46.5845790329862,
+                -23.71624047588308
+            ]
+        }
+    },
+    "name": {
+        "type": "Text",
+        "value": "Bem Barato"
+    }
+}'
+```
 ### Diretrizes do modelo de dados
 
 Embora a entidade de dados em seu contexto varie de acordo com seu caso de uso, a estrutura comum dentro de cada entidade de dados deve ser padronizada para promover a reutilização e interoperabilidade entre sistemas. As diretrizes completas do modelo de dados FIWARE podem ser encontradas [aqui](https://smartdatamodels.org/). Este tutorial demonstra o uso das seguintes recomendações:
@@ -120,7 +189,6 @@ Embora a entidade de dados em seu contexto varie de acordo com seu caso de uso, 
 	- Usamos um atributo `location` para coordenadas geográficas.
 - Use GeoJSON para codificar propriedades geoespaciais
 	- [GeoJSON](http://geojson.org/) é um formato padrão aberto projetado para representar características geográficas simples. O atributo `location` foi codificado como um local geoJSON `Point`.
-
 ### Metadados de atributo
 
 Metadados são _"dados sobre dados"_. São dados adicionais para descrever propriedades do próprio valor do atributo, como precisão, provedor ou um carimbo de data/hora. Já existem vários atributos de metadados integrados e esses nomes são reservados, são eles:
@@ -131,53 +199,22 @@ Metadados são _"dados sobre dados"_. São dados adicionais para descrever propr
 - `actionType` (tipo: Texto): Indica qual o tipo de ação ocorreu no atributo (Somente em notificações).
 
 Um elemento de metadados pode ser encontrado no atributo `address`, no qual um sinalizador `verified` indica se o endereço foi confirmado.
-
 ## Consultando dados de contexto
 
 Um aplicativo consumidor agora pode solicitar dados de contexto fazendo solicitações HTTP para o **Orion Context Broker**. A interface NGSI existente nos permite fazer consultas complexas e filtrar resultados.
 
-No momento, para a demonstração das lojas, todos os dados de contexto estão sendo adicionados diretamente por meio de solicitações HTTP, porém em uma solução inteligente mais complexa, o **Orion Context Broker** também recuperará o contexto diretamente dos sensores associados a cada entidade.
+> No momento, para a demonstração das lojas, todos os dados de contexto estão sendo adicionados diretamente por meio de solicitações HTTP, porém em uma solução inteligente mais complexa, o **Orion Context Broker** também recuperará o contexto diretamente dos sensores associados a cada entidade.
 
-Abaixo estão alguns exemplos de solicitações, em cada caso o parâmetro de consulta `options=keyValues` foi usado para encurtar as respostas removendo os elementos de tipo de cada atributo
+### Obtendo todas as entidades
 
-### Obter dados da entidade por ID
+>[!Info] **Envie a solicitação `Recupere todas as entidades`**.
+>Este solicitação resgata todas as informações presentes no Orion Context Broker. 
 
->[!Info] **Envie a solicitação `Resgate loja 1`**. 
->Este solicitação resgata as informações da loja com o ID `urn:ngsi-ld:Store:001`
-
-Devido ao uso de `options=keyValues`, a resposta consiste apenas em JSON sem os elementos de atributo `type` e `metadata`.
-
-```json
-{
-    "id": "urn:ngsi-ld:Store:001",
-    "type": "Store",
-    "address": {
-        "streetAddress": "Avenida Maria Servidei Demarchi, 398",
-        "addressRegion": "São Paulo",
-        "addressLocality": "São Bernardo do Campo",
-        "postalCode": "09820-000"
-    },
-    "location": {
-        "type": "Point",
-        "coordinates": [
-            -46.552501261,
-            -23.726831523
-        ]
-    },
-    "name": "Carrefour"
-}
+```bash
+curl --location 'http://localhost:1026/v2/entities?options=keyValues'
 ```
 
-> Se você deseja os metadados de uma determinada entidade, basta desmarcar as opções de parâmetros na aba `params` no Postman
-
-### Obter dados da entidade por tipo
-
-Este exemplo retorna os dados de todas as entidades do tipo `store` dentro dos dados de contexto. O parâmetro `type` limita a resposta apenas para armazenar entidades.
-
->[!Info] **Envie a solicitação `Recupere as lojas`**. 
->Esta solicitação recupera todas as entidades definidas com o tipo `store`
-
-A resposta é uma lista de todas as entidades que correspondem à consulta por `type`, neste caso o tipo `Building`. A resposta será algo semelhante a:
+Devido ao uso de `options=keyValues`, a resposta consiste apenas em JSON sem os elementos de atributo `type` e `metadata`. A resposta recebida deve ser algo do tipo:
 
 ```json
 [
@@ -219,45 +256,147 @@ A resposta é uma lista de todas as entidades que correspondem à consulta por `
     }
 ]
 ```
+### Obter dados da entidade por ID
+
+>[!Info] **Envie a solicitação `Resgate loja 1`**.
+>Este solicitação resgata as informações da loja com o ID `urn:ngsi-ld:Store:001`
+
+```bash
+curl --location 'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001?options=keyValues'
+```
+
+Devido ao uso de `options=keyValues`, a resposta consiste apenas em JSON sem os elementos de atributo `type` e `metadata`.
+  
+```json
+{
+    "id": "urn:ngsi-ld:Store:001",
+    "type": "Store",
+    "address": {
+        "streetAddress": "Avenida Maria Servidei Demarchi, 398",
+        "addressRegion": "São Paulo",
+        "addressLocality": "São Bernardo do Campo",
+        "postalCode": "09820-000"
+    },
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            -46.552501261,
+            -23.726831523
+        ]
+    },
+    "name": "Carrefour"
+}
+```
+
+> Se você deseja os metadados de uma determinada entidade, basta desmarcar as opções de parâmetros na aba `params` no Postman. Ou com a requisição abaixo. 
+
+```bash
+curl --location 'http://localhost:1026/v2/entities/urn:ngsi-ld:Store:001'
+```
+
+### Obter dados da entidade por tipo
+
+Este exemplo retorna os dados de todas as entidades do tipo `store` dentro dos dados de contexto. O parâmetro `type` limita a resposta apenas para armazenar entidades.
+
+>[!Info] **Envie a solicitação `Recupere as lojas`**.
+>Esta solicitação recupera todas as entidades definidas com o tipo `store`
+
+```bash
+curl --location 'http://localhost:1026/v2/entities?options=keyValues&type=Store'
+```
+
+A resposta é uma lista de todas as entidades que correspondem à consulta por `type`, neste caso o tipo `Store`. A resposta será algo semelhante a:
+
+```json
+
+[
+    {
+        "id": "urn:ngsi-ld:Store:001",
+        "type": "Store",
+        "address": {
+            "streetAddress": "Avenida Maria Servidei Demarchi, 398",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09820-000"
+        },
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -46.552501261,
+                -23.726831523
+            ]
+        },
+        "name": "Carrefour"
+    },
+    {
+        "id": "urn:ngsi-ld:Store:002",
+        "type": "Store",
+        "address": {
+            "streetAddress": "Avenida Humberto de Alencar Castelo Branco, 3100",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09851-070"
+        },
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -46.584579033,
+                -23.716240476
+            ]
+        },
+        "name": "Bem Barato"
+    }
+]
+```
 
 ### Filtre dados de contexto comparando os valores de um atributo
 
-Este exemplo retorna todos as lojas com o atributo `name` igual a `Carrefour`. A filtragem pode ser feita usando o parâmetro `q`. 
+Este exemplo retorna todos as lojas com o atributo `name` igual a `Carrefour`. A filtragem pode ser feita usando o parâmetro `q`.
 
->[!Info] **Envie a solicitação `Recupere o Carrefour`**. 
+>[!Info] **Envie a solicitação `Recupere o Carrefour`**.
 >Essa solicitação resgata a entidade que contém um atributo `name` que é igual a `Carrefour`.
+
+```bash
+curl --location 'http://localhost:1026/v2/entities?type=Store&options=keyValues&q=name%3D%3DCarrefour'
+```
 
 Observe que o parâmetro `q` é igual a `name==Carrefour`. A resposta será uma lista de entidades que correspondem à consulta fornecida, neste caso, apenas uma entidade. Abaixo segue a resposta:
 
+
 ```json
+
 [
-    {
-        "id": "urn:ngsi-ld:Store:001",
-        "type": "Store",
-        "address": {
-            "streetAddress": "Avenida Maria Servidei Demarchi, 398",
-            "addressRegion": "São Paulo",
-            "addressLocality": "São Bernardo do Campo",
-            "postalCode": "09820-000"
-        },
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                -46.552501261,
-                -23.726831523
-            ]
-        },
-        "name": "Carrefour"
-    }
+    {
+        "id": "urn:ngsi-ld:Store:001",
+        "type": "Store",
+        "address": {
+            "streetAddress": "Avenida Maria Servidei Demarchi, 398",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09820-000"
+        },
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -46.552501261,
+                -23.726831523
+            ]
+        },
+        "name": "Carrefour"
+    }
 ]
 ```
 
 ### Filtre dados de contexto comparando os valores de um subatributo
 
-Este exemplo retorna todas as entidades `Store` localizadas em São Bernardo do Campo. A filtragem pode ser feita usando o parâmetro `q`. Os subatributos são anotados usando a sintaxe de ponto, por exemplo `address.addressLocality` 
+Este exemplo retorna todas as entidades `Store` localizadas em São Bernardo do Campo. A filtragem pode ser feita usando o parâmetro `q`. Os subatributos são anotados usando a sintaxe de ponto, por exemplo `address.addressLocality`
 
->[!Info] **Envie a solicitação `Recupere lojas em São Bernardo`**. 
+>[!Info] **Envie a solicitação `Recupere lojas em São Bernardo`**.
 >Esta solicitação recupera as entidades que contém um atributo chamado `adress` e que este tenha um subatributos chamado `adressLocality`. Este subatributo deve ser igual a `São Bernardo do Campo`
+
+```bash
+curl --location 'http://localhost:1026/v2/entities?type=Store&options=keyValues&q=address.addressLocality%3D%3D%27S%C3%A3o%20Bernardo%20do%20Campo%27'
+```
 
 >Caso uma string contenha algum caractere não permitido, como `á` ou `-`, ela deve ser codificada em URL (use esta ferramenta [URL Encode and Decode](https://www.urlencoder.org/)) e mantida entre aspas simples `'` = `%27`
 
@@ -265,130 +404,141 @@ A resposta é uma lista de entidades que correspondem a essa consulta. Neste cas
 
 ```json
 [
-    {
-        "id": "urn:ngsi-ld:Store:001",
-        "type": "Store",
-        "address": {
-            "streetAddress": "Avenida Maria Servidei Demarchi, 398",
-            "addressRegion": "São Paulo",
-            "addressLocality": "São Bernardo do Campo",
-            "postalCode": "09820-000"
-        },
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                -46.552501261,
-                -23.726831523
-            ]
-        },
-        "name": "Carrefour"
-    },
-    {
-        "id": "urn:ngsi-ld:Store:002",
-        "type": "Store",
-        "address": {
-            "streetAddress": "Avenida Humberto de Alencar Castelo Branco, 3100",
-            "addressRegion": "São Paulo",
-            "addressLocality": "São Bernardo do Campo",
-            "postalCode": "09851-070"
-        },
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                -46.584579033,
-                -23.716240476
-            ]
-        },
-        "name": "Bem Barato"
-    }
+    {
+        "id": "urn:ngsi-ld:Store:001",
+        "type": "Store",
+        "address": {
+            "streetAddress": "Avenida Maria Servidei Demarchi, 398",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09820-000"
+        },
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -46.552501261,
+                -23.726831523
+            ]
+        },
+        "name": "Carrefour"
+    },
+    {
+        "id": "urn:ngsi-ld:Store:002",
+        "type": "Store",
+        "address": {
+            "streetAddress": "Avenida Humberto de Alencar Castelo Branco, 3100",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09851-070"
+        },
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -46.584579033,
+                -23.716240476
+            ]
+        },
+        "name": "Bem Barato"
+    }
 ]
 ```
-
 
 ### Filtre dados de contexto consultando metadados
 
 Este exemplo retorna os dados de todas as entidades `Store` com um endereço verificado. As consultas de metadados podem ser feitas usando o parâmetro `mq`.
 
->[!Info] **Envie a solicitação `Recupere lojas verificadas`**. 
+>[!Info] **Envie a solicitação `Recupere lojas verificadas`**.
 >Esta solicitação recupera as lojas que contém um metadado de um atributo com o nome `verified`.
+
+```bash
+curl --location 'http://localhost:1026/v2/entities?type=Store&options=keyValues&mq=address.verified%3D%3Dtrue'
+```
 
 A resposta é uma lista de entidades que correspondem a essa consulta de metadados fornecida. Nesse caso, ambos as `stores` são verificadas, portanto ambas são retornadas na resposta. Abaixo segue a resposta:
 
 ```json
 [
-    {
-        "id": "urn:ngsi-ld:Store:001",
-        "type": "Store",
-        "address": {
-            "streetAddress": "Avenida Maria Servidei Demarchi, 398",
-            "addressRegion": "São Paulo",
-            "addressLocality": "São Bernardo do Campo",
-            "postalCode": "09820-000"
-        },
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                -46.552501261,
-                -23.726831523
-            ]
-        },
-        "name": "Carrefour"
-    },
-    {
-        "id": "urn:ngsi-ld:Store:002",
-        "type": "Store",
-        "address": {
-            "streetAddress": "Avenida Humberto de Alencar Castelo Branco, 3100",
-            "addressRegion": "São Paulo",
-            "addressLocality": "São Bernardo do Campo",
-            "postalCode": "09851-070"
-        },
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                -46.584579033,
-                -23.716240476
-            ]
-        },
-        "name": "Bem Barato"
-    }
+    {
+        "id": "urn:ngsi-ld:Store:001",
+        "type": "Store",
+        "address": {
+            "streetAddress": "Avenida Maria Servidei Demarchi, 398",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09820-000"
+        },
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -46.552501261,
+                -23.726831523
+            ]
+        },
+        "name": "Carrefour"
+    },
+    {
+        "id": "urn:ngsi-ld:Store:002",
+        "type": "Store",
+        "address": {
+            "streetAddress": "Avenida Humberto de Alencar Castelo Branco, 3100",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09851-070"
+        },
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -46.584579033,
+                -23.716240476
+            ]
+        },
+        "name": "Bem Barato"
+    }
 ]
 ```
 
 ### Filtre dados de contexto comparando os valores de um atributo `geo:json`
 
 Este exemplo retorna a loja que está a uma distância máxima de 1500 metros de um ponto representado por um objeto `geo:json`. A consulta deve conter os seguintes parâmetros:
+
 - `georel` - Que tipo de consulta será usada. Pode ser `near`, `coveredBy`, `intersects`, `equals` e `disjoint`.
 - `geometria` - Pode ser um `point`, `line`, `box`, `polygon`.
 - `coords` - coordenadas para essa geometria dada.
 
->[!Info] **Envie a requisição `Recupere loja mais próxima`**. 
+>[!Info] **Envie a requisição `Recupere loja mais próxima`**.
 >Esta requisição resgata as lojas que estão a 1500 de um ponto definido como um objeto `geo:json`.
+
+```bash
+curl --location 'http://localhost:1026/v2/entities?type=Store&options=keyValues&georel=near%3BmaxDistance%3A1500&geometry=point&coords=-23.7272%2C%20-46.5792'
+```
 
 A resposta é uma lista de entidades correspondentes a essa consulta, no nosso caso mostra uma lista de `stores` que estão a uma distância máxima de 1500 metros do ponto localizado nas coordenadas -23.7272 -46.5792 (referente ao Centro universitário FEI). Abaixo segue a resposta:
 
 ```json
 [
-    {
-        "id": "urn:ngsi-ld:Building:002",
-        "type": "Building",
-        "address": {
-            "streetAddress": "Avenida Humberto de Alencar Castelo Branco, 3100",
-            "addressRegion": "São Paulo",
-            "addressLocality": "São Bernardo do Campo",
-            "postalCode": "09851-070"
-        },
-        "location": {
-            "type": "Point",
-            "coordinates": [
-                -46.584579033,
-                -23.716240476
-            ]
-        },
-        "name": "Bem Barato"
-    }
+    {
+        "id": "urn:ngsi-ld:Building:002",
+        "type": "Building",
+        "address": {
+            "streetAddress": "Avenida Humberto de Alencar Castelo Branco, 3100",
+            "addressRegion": "São Paulo",
+            "addressLocality": "São Bernardo do Campo",
+            "postalCode": "09851-070"
+        },
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -46.584579033,
+                -23.716240476
+            ]
+        },
+        "name": "Bem Barato"
+    }
 ]
+
 ```
 
+# Atividade
 
-:: **Referência** :: [Getting Started with NGSI-v2 - Step-by-Step for NGSI-v2 (fiware-tutorials.readthedocs.io)](https://fiware-tutorials.readthedocs.io/en/latest/getting-started.html)
+Com base no que foi apresentado crie um pequeno modelo de entidades para representar algum sistema simples. Em sequência, crie as entidades e seus atributos. Por fim, faça requisições para filtrar os resultados obtidos. 
+
